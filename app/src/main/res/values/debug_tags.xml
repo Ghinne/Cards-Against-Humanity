@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="DEBUG_SIGN_IN">WHERE IN SIGN IN</string>
-    <string name="DEBUG_NICKNAME">WHERE IN NICKNAME</string>
-    <string name="DEBUG_MATCHES">WHERE IN MATCHES</string>
-    <string name="DEBUG_WAIT">WHERE IN WAIT</string>
-    <string name="DEBUG_GAME">WHERE IN GAME</string>
-    <string name="DEBUG_DISTRIBUTING">WHERE IN DISTRIBUTING</string>
-    <string name="DEBUG_SHUFFLING">WHERE IN SHUFFLING</string>
-    <string name="DEBUG_AWARDING">WHERE IN AWARDING</string>
+    <string name="DEBUG_SIGN_IN" translatable="false">WHERE IN SIGN IN</string>
+    <string name="DEBUG_NICKNAME" translatable="false">WHERE IN NICKNAME</string>
+    <string name="DEBUG_MATCHES" translatable="false">WHERE IN MATCHES</string>
+    <string name="DEBUG_WAIT" translatable="false">WHERE IN WAIT</string>
+    <string name="DEBUG_GAME" translatable="false">WHERE IN GAME</string>
+    <string name="DEBUG_DISTRIBUTING" translatable="false">WHERE IN DISTRIBUTING</string>
+    <string name="DEBUG_SHUFFLING" translatable="false">WHERE IN SHUFFLING</string>
+    <string name="DEBUG_AWARDING" translatable="false">WHERE IN AWARDING</string>
 </resources>
