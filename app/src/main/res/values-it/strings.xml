@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- SIGN IN VIEW -->
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_in_button">Accedi</string>
+    <string name="sign_in_google">Accedi con Google</string>
+    <string name="short_password">La password è troppo corta! (min 8 caratteri)</string>
+    <string name="wrong_password">Password errata!</string>
+    <string name="invalid_email">Email non valida!</string>
+    <string name="used_email">Email già usata!</string>
+    <string name="error_authentication">Errore durante l\'autenticazione! Riprova più tardi…</string>
+
+    <!-- NICKNAME VIEW -->
+    <string name="user_not_logged">Errore! Utente non loggato.</string>
+    <string name="choose_nickname">Scegli un nickname:</string>
+    <string name="nickname_hint">Nickname</string>
+    <string name="enter_the_game_button">Gioca</string>
+    <string name="change_user_button">Cambia utente</string>
+    <string name="short_nickname">Nickname troppo corto! (min 3 caratteri)</string>
+    <string name="error_user">Errore nel ottenere l\'utente! Riprova più tardi…</string>
+    <string name="error_used_nickname">Nickname già usato!</string>
+    <string name="error_updating_nickname">Errore nell\'aggiornamento del nickname! Riprova più tardi…</string>
+
+    <!-- MATCHES VIEW -->
+    <string name="already_used_name">Questo nome è già usato.</string>
+    <string name="return_to_game_button">Ritorna in gioco</string>
+    <string name="back_button">Indietro</string>
+    <string name="create_new_match">Crea una nuova partita</string>
+    <string name="match_name">Nome partita</string>
+    <string name="match_passkey">Chiave partita</string>
+    <string name="rounds">Rounds: </string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
+    <string name="create_match_button">Crea</string>
+    <string name="choose_existing_match">Partecipa a un match</string>
+    <string name="join_match_button">Partecipa</string>
+    <string name="wrong_passkey">Chiave sbagliata!</string>
+    <string name="error_update">Errore nell\'aggiornare i dati! Riprova più tardi…</string>
+    <string name="error_no_matches">Errore! Nessun match selezionato.</string>
+    <string name="error_adding_user">Errore nell\'aggiungere l\'utente! Riprova più tardi…</string>
+    <string name="error_returning">"Errore nel ritornare alla partita! Riprova più tardi…"</string>
+
+    <!-- WAITING PLAYERS -->
+    <string name="wait_player">Attendi gli altri giocatori</string>
+    <string name="players_count">Numero giocatori: </string>
+    <string name="start_button">Inizia la partita</string>
+    <string name="cancel_button">Annulla la partita</string>
+    <string name="error_match_cancelled">Match has been cancelled!</string>
+    <string name="error_updating_user">Errore nell\'aggiornare l\'utente! Riprova più tardi…</string>
+    <string name="error_removing_match">Errore nell\'annullare la partita!</string>
+    <string name="error_activating_match">Errore nell\'attivare la partita! Riprova più tardi…</string>
+    <string name="not_enough_players">Non ci sono abbastanza giocatori! (min 3)</string>
+
+    <!-- LOADING -->
+    <string name="shuffling_cards">Mescolando le carte</string>
+    <string name="distributing_cards">Distribuendo le carte</string>
+    <string name="error_no_card">Errore carta non trovata!</string>
+    <string name="error_cleaning_cards">Errore nel pulire le carte!</string>
+
+
+    <!-- GAME -->
+    <string name="button_done">Fatto</string>
+    <string name="button_exit">Esci</string>
+    <string name="not_enough_cards">Scegli abbastanza carte da riempire tutte le lacune!</string>
+    <string name="no_best_choice">Scegli il set di risposte che ti piace di più!</string>
+    <string name="not_all_players_voted">Aspetta che tutti abbiano votato!</string>
+    <string name="error_cards">Errore nel scaricare le carte! Riprova più tardi…</string>
+    <string name="points">Punti: </string>
+    <string name="placement">Classifica: </string>
+    <string name="round">Round: </string>
+    <string name="error_getting_data">Errore nel ricevere i dati dal database! Riprova più tardi…</string>
+
+
+    <!-- AWARDING -->
+    <string name="you_win">Hai vinto!</string>
+    <string name="you_lost">Hai perso!</string>
+    <string name="you_win_the_game">Hai vinto la partita!</string>
+    <string name="you_lost_the_game">Hai perso la partita!</string>
+    <string name="error_ending">Errore nel terminare il gioco!</string>
+    <string name="error_deleting">Errore nel terminare il gioco!</string>
+
+    <!-- LOADING -->
+    <string name="loading">Caricamento</string>
+
+    <!-- OTHERS -->
+    <string name="app_name">CAU</string>
+    <string name="logo">logo</string>
+</resources>

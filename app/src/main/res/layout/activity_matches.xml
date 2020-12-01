@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ChooseMatchActivity">
+
+    <Button
+        android:id="@+id/bt_return_to_match"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/return_to_game_button"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/tv_new_match"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/days_one"
+        android:text="@string/create_new_match"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/bt_return_to_match"
+        app:layout_constraintTop_toBottomOf="@+id/bt_return_to_match" />
+
+    <EditText
+        android:id="@+id/et_match_name"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:fontFamily="@font/days_one"
+        android:hint="@string/match_name"
+        android:inputType="textPersonName"
+        android:maxLength="15"
+        android:textColorHint="@color/colorPrimaryLight"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@id/bt_create_match"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tv_new_match"
+        app:layout_constraintTop_toBottomOf="@+id/tv_new_match" />
+
+    <EditText
+        android:id="@+id/et_match_passkey"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:fontFamily="@font/days_one"
+        android:hint="@string/match_passkey"
+        android:inputType="textPassword"
+        android:maxLength="15"
+        android:textColor="@color/colorPrimaryDark"
+        android:textColorHint="@color/colorPrimaryLight"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="@+id/et_match_name"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/et_match_name"
+        app:layout_constraintTop_toBottomOf="@+id/et_match_name" />
+
+    <Button
+        android:id="@+id/bt_create_match"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:enabled="false"
+        android:text="@string/create_match_button"
+        app:layout_constraintBottom_toTopOf="@+id/bt_remove_round"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/et_match_name"
+        app:layout_constraintTop_toTopOf="@+id/et_match_name" />
+
+    <TextView
+        android:id="@+id/tv_choose_match"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/days_one"
+        android:text="@string/choose_existing_match"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/tv_new_match"
+        app:layout_constraintTop_toBottomOf="@+id/bt_remove_round" />
+
+    <ScrollView
+        android:id="@+id/sv_ready_matches"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/bt_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/tv_choose_match"
+        app:layout_constraintTop_toBottomOf="@+id/tv_choose_match">
+
+        <LinearLayout
+            android:id="@+id/ll_ready_matches"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"></LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/bt_back"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/back_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_rounds"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/days_one"
+        android:text="@string/rounds"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/bt_remove_round"
+        app:layout_constraintEnd_toEndOf="@+id/et_match_passkey"
+        app:layout_constraintStart_toStartOf="@+id/et_match_passkey"
+        app:layout_constraintTop_toTopOf="@+id/bt_remove_round" />
+
+    <Button
+        android:id="@+id/bt_remove_round"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="@string/minus"
+        app:layout_constraintStart_toEndOf="@+id/tv_rounds"
+        app:layout_constraintTop_toBottomOf="@+id/et_match_passkey" />
+
+    <Button
+        android:id="@+id/bt_add_round"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:text="@string/plus"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/bt_remove_round"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/bt_remove_round"
+        app:layout_constraintTop_toTopOf="@+id/bt_remove_round" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,24 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimaryLight</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+        <item name="materialButtonStyle">@style/customButton</item>
+    </style>
+
+    <style name="customButton" parent="Widget.MaterialComponents.Button">
+        <item name="android:textColor">@color/colorPrimaryLight</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/days_one</item>
+        <item name="backgroundTint">@null</item>
+        <item name="android:background">@drawable/custom_button</item>
+    </style>
+
+    <style name="whiteBackground">
+        <item name="backgroundTint">@null</item>
+        <item name="android:background">@drawable/white_background</item>
+    </style>
+
+</resources>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="MIN_PASSWORD_CHARS">8</integer>
+    <integer name="MIN_NICKNAME_CHARS">3</integer>
+    <integer name="MIN_MATCH_NAME_CHARS">3</integer>
+    <integer name="MIN_PLAYERS">3</integer>
+    <integer name="MAX_PLAYERS">5</integer>
+    <integer name="WHITE_CARDS_PER_PLAYER">10</integer>
+    <integer name="MIN_ROUNDS_COUNT">5</integer>
+    <integer name="MAX_ROUNDS_COUNT">20</integer>
+
+    <!-- LANGUAGES -->
+    <string name="english" translatable="false">english</string>
+    <string name="italiano" translatable="false">italiano</string>
+
+    <string-array name="SUPPORTED_LANGUAGES">
+        <item>@string/english</item>
+        <item>@string/italiano</item>
+    </string-array>
+
+    <!-- CODES -->
+    <integer name="SHUFFLING_CODE">1</integer>
+    <integer name="DISTRIBUTING_CODE">2</integer>
+    <integer name="AWARDING_CODE">3</integer>
+    <integer name="END_CODE">4</integer>
+</resources>
