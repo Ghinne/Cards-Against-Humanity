@@ -24,34 +24,6 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
     }
 
     /**
-     * This function is used to check if user is in an active db match,
-     * @param user user to search in db players
-     * - Query db match searching for user match,
-     * - If user in match enable button to return to match,
-     */
-    fun checkActiveMatchesInDB(user: User) {
-        Log.d(tag, "Checking active matches.")
-        // Defining the match reference
-        val dRef = db.collection("matches")
-            .document(user.matchName)
-            .get()
-        // Get match data
-        dRef.addOnSuccessListener { doc ->
-            if (doc != null && doc.exists()) {
-                Log.d(tag, "Active matches found.")
-
-                // Enable return button
-                (activity as ChooseMatchActivity).enableReturn()
-            } else {
-                Log.d(tag, "User isn't in any match.")
-            }
-        }
-            .addOnFailureListener { e ->
-                Log.d(tag, "Error checking for matches.$e")
-            }
-    }
-
-    /**
      * This function is used to check if match name is not already used,
      * @param matchName match name to search
      * - Query db match searching for match with matchName passed as parameter,
@@ -90,19 +62,18 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
     /**
      * This function is used to delete user from match players in db,
      * @param user to remove
-     * @param match match to search in db
      * @param by code to get calling function
      * - Query db searching for user match,
      * - If present
      * -  If there aren't enough players to continue, after user removal, delete it,
      * -  Otherwise remove player an if player was dealer one set new dealer as first player,
      */
-    fun removePlayerInDB(user: User, match: Match, by: String) {
+    fun removePlayerInDB(user: User, by: String) {
         Log.d(tag, "Deleting user from match in db.")
 
         // Getting match db reference
         val dRef = db.collection("matches")
-            .document(match.name as String)
+            .document(user.matchName)
             .get()
 
         // Getting results
@@ -138,7 +109,7 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
                     if (dbMatch.dealer == user.uid) {
                         // Update dealer
                         db.collection("matches")
-                            .document(match.name as String)
+                            .document(user.matchName)
                             .update("dealer", dbMatch.players[0])
                             .addOnSuccessListener {
                                 Log.d(tag, "Dealer updated")
@@ -259,20 +230,29 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
      * This callback is called when match is retrieved from db,
      * - Update local match,
      */
-    override fun onGetMatchSuccess(match: Match) {
-        // Update active match to resume
-        (activity as ChooseMatchActivity).updateMatchToResume(match)
+    override fun onGetMatchSuccess(match: Match, by: String) {
+        when (by) {
+            "resume"-> {
+                    // Update active match to resume
+                    (activity as ChooseMatchActivity).updateMatchToResume(match)}
+            "check" -> {
+                    // Enable resume
+                    (activity as ChooseMatchActivity).enableReturn()}
+        }
     }
-
     /**
      * This callback is called when error occurred in db,
      * - Show error and go to Nickname activity
      */
-    override fun onGetMatchFailure() {
-        // Show error to user
-        (activity as ChooseMatchActivity).showError(resources?.getString(R.string.error_returning).toString())
-        // Go to Nickname activity
-        (activity as ChooseMatchActivity).goNicknameActivity()
+    override fun onGetMatchFailure(by: String) {
+        when (by) {
+            "resume"-> {
+                // Show error to user
+                (activity as ChooseMatchActivity).showError(resources?.getString(R.string.error_returning).toString())
+                // Go to Nickname activity
+                //(activity as ChooseMatchActivity).goNicknameActivity()
+                }
+        }
     }
 
     /**
@@ -317,6 +297,7 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
 
     override fun onMatchListenerEvent(match: Match, by: String) {}
     override fun onMatchListenerFailure() {}
+    override fun onMatchDeleted() {}
     override fun onDeleteMatchSuccess() {}
     override fun onDeleteMatchFailure() {}
 }

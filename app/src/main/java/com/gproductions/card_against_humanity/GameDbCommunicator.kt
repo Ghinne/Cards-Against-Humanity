@@ -23,8 +23,26 @@ open class GameDbCommunicator(activity: GameActivity) : DbCommunicator() {
     override fun onSetUserFailure() {}
     override fun onGetUserSuccess(user: User) {}
     override fun onGetUserFailure() {}
-    override fun onUpdateUserSuccess() {}
-    override fun onUpdateUserFailure() {}
+
+    /**
+     * This callback is called when match is deleted and user update his matchName,
+     */
+    override fun onUpdateUserSuccess() {
+        // User match clear returning to Nickname activity
+        (activity as GameActivity).goNicknameActivity()
+    }
+
+    /**
+     * This callback is called when error occurred in db,
+     * - Show error and go to Nickname activity
+     */
+    override fun onUpdateUserFailure() {
+        // Show error to user
+        (activity as GameActivity).showError(resources?.getString(R.string.error_update).toString())
+        // Go in Nickname activity
+        (activity as GameActivity).goNicknameActivity()
+    }
+
     override fun onSetMatchSuccess() {}
 
     /**
@@ -38,8 +56,8 @@ open class GameDbCommunicator(activity: GameActivity) : DbCommunicator() {
         (activity as GameActivity).goNicknameActivity()
     }
 
-    override fun onGetMatchSuccess(match: Match) {}
-    override fun onGetMatchFailure() {}
+    override fun onGetMatchSuccess(match: Match, by: String) {}
+    override fun onGetMatchFailure(by: String) {}
     override fun onUpdateMatchSuccess(by: String) {}
 
     /**
@@ -93,6 +111,13 @@ open class GameDbCommunicator(activity: GameActivity) : DbCommunicator() {
         (activity as GameActivity).showError(resources?.getString(R.string.error_getting_data).toString())
         // Go in Nickname activity
         (activity as GameActivity).goNicknameActivity()
+    }
+
+    override fun onMatchDeleted() {
+        // Show error to user
+        (activity as GameActivity).showError(resources?.getString(R.string.error_getting_data).toString())
+        //Update user
+        (activity as GameActivity).clearUserMatch()
     }
 
     override fun onDeleteMatchSuccess() {}

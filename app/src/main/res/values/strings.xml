@@ -66,6 +66,8 @@
     <string name="placement">Placement: </string>
     <string name="round">Round: </string>
     <string name="error_getting_data">Error getting data from db! Retry later…</string>
+    <string name="error_match_deleted">Match has been deleted!</string>
+
 
     <!-- AWARDING -->
     <string name="you_win">You win!</string>

@@ -12,6 +12,7 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FieldValue
+import java.util.*
 
 /**
  * This activity class is used by user to create a match, resume an active one or join a ready one,
@@ -47,7 +48,6 @@ class ChooseMatchActivity : AppCompatActivity(), View.OnClickListener {
         // Initialize communicator
         comm = ChooseMatchDbCommunicator(this)
 
-
         // Get saved state
         bundle = savedInstanceState
         if (bundle == null) {
@@ -57,7 +57,6 @@ class ChooseMatchActivity : AppCompatActivity(), View.OnClickListener {
 
         // Getting user and match
         user = bundle!!.getSerializable("b_user") as User?
-        match = bundle!!.getSerializable("b_match") as Match?
 
         // If user null show an error
         if (user == null) {
@@ -90,18 +89,20 @@ class ChooseMatchActivity : AppCompatActivity(), View.OnClickListener {
         printRounds()
         
         // Check for active matches
-        comm?.checkActiveMatchesInDB(user as User)
+        comm!!.getMatchInDB(user!!.matchName, "check")
 
         // Check for match name field changing event
         addMatchNameListener(etMatchName)
 
         // Set language
         val languages: Array<out String> = resources.getStringArray(R.array.SUPPORTED_LANGUAGES)
+        language = Locale.getDefault().displayLanguage.toString()
+
         if (!languages.contains(language))
             language = "english"
 
         // Add listener for ready matches
-        comm?.addReadyMatchesListenerInDB(user?.uid as String, language as String)
+        comm!!.addReadyMatchesListenerInDB(user!!.uid as String, language as String)
     }
 
     /**
@@ -113,7 +114,7 @@ class ChooseMatchActivity : AppCompatActivity(), View.OnClickListener {
         if (v != null) {
             // Check which button has been pressed
             when (v.id) {
-                R.id.bt_return_to_match -> comm!!.getMatchInDB(user!!.matchName)
+                R.id.bt_return_to_match -> comm!!.getMatchInDB(user!!.matchName, "resume")
                 R.id.bt_create_match -> createMatch()
                 R.id.bt_add_round -> {
                     if (rounds!! < resources.getInteger(R.integer.MAX_ROUNDS_COUNT))
@@ -171,7 +172,7 @@ class ChooseMatchActivity : AppCompatActivity(), View.OnClickListener {
                     disableCreate()
                 } else {
                     // Check if username is long enough and if it's not already used
-                    comm?.checkIfNameIsUsedInDB(matchName)
+                    comm!!.checkIfNameIsUsedInDB(matchName)
                 }
             }
         })
@@ -198,23 +199,22 @@ class ChooseMatchActivity : AppCompatActivity(), View.OnClickListener {
             language = language,
             passkey = mPasskey,
             active = false,
-            dealer = user?.uid as String,
+            dealer = user!!.uid as String,
             rounds = rounds
         )
-        newMatch.players.add(user?.uid as String)
-        newMatch.distributing.add(user?.uid as String)
+        newMatch.players.add(user!!.uid as String)
+        newMatch.distributing.add(user!!.uid as String)
 
         // Update match
-        val oldMatch = match
         match = newMatch
 
         // Delete actual match if present
-        if (oldMatch != null) {
-            Log.d(resources.getString(R.string.DEBUG_MATCHES), "OLD MATCH $oldMatch")
-            comm?.removePlayerInDB(user as User, oldMatch, "create")
+        Log.d(resources.getString(R.string.DEBUG_MATCHES), "OLD MATCH ${user!!.matchName}")
+        if (user!!.matchName != "nil") {
+            comm!!.removePlayerInDB(user as User, "create")
         } else {
             // Update or create match in db
-            comm?.setMatchInDB(match as Match)
+            comm!!.setMatchInDB(match as Match)
         }
     }
 
@@ -228,10 +228,10 @@ class ChooseMatchActivity : AppCompatActivity(), View.OnClickListener {
         when(by) {
             "create" -> {
                 // Update or create match in db
-                comm?.setMatchInDB(match as Match)}
+                comm!!.setMatchInDB(match as Match)}
             "join" -> {
                 // Add player to db
-                comm?.updateMatchInDB(
+                comm!!.updateMatchInDB(
                     match!!.name as String,
                     hashMapOf("players" to FieldValue.arrayUnion(user!!.uid))
                 )
@@ -261,13 +261,13 @@ class ChooseMatchActivity : AppCompatActivity(), View.OnClickListener {
          * This function prepare user to be match dealer once he create a match,
          */
         // Update user match
-        user?.matchName = match?.name as String
+        user!!.matchName = match!!.name as String
 
         // Update user
-        comm?.updateUserInDB(
-            user?.uid as String,
+        comm!!.updateUserInDB(
+            user!!.uid as String,
             hashMapOf(
-                "matchName" to match?.name as String
+                "matchName" to match!!.name as String
             )
         )
     }
@@ -323,21 +323,24 @@ class ChooseMatchActivity : AppCompatActivity(), View.OnClickListener {
             if (pk == joinableMatch.passkey) {
 
                 // Update user bundle
-                user?.matchName = joinableMatch.name as String
+                user!!.matchName = joinableMatch.name as String
 
                 // Add player to match players
-                joinableMatch.players.add(user?.uid as String)
+                joinableMatch.players.add(user!!.uid as String)
 
                 // Update match
-                val oldMatch = match
                 match = joinableMatch
 
-                if (oldMatch != null) {
+                if (user!!.matchName != "nil") {
+                    Log.d(
+                        resources.getString(R.string.DEBUG_MATCHES),
+                        "Removing player from old match."
+                    )
                     // Clear user matches
-                    comm?.removePlayerInDB(user as User, oldMatch, "join")
+                    comm!!.removePlayerInDB(user as User, "join")
                 } else {
                     // Add player to db
-                    comm?.updateMatchInDB(
+                    comm!!.updateMatchInDB(
                         match!!.name as String,
                         hashMapOf("players" to FieldValue.arrayUnion(user!!.uid))
                     )
@@ -408,14 +411,12 @@ class ChooseMatchActivity : AppCompatActivity(), View.OnClickListener {
             resources.getString(R.string.DEBUG_MATCHES),
             "Starting Nickname activity."
         )
-        Log.d(resources.getString(R.string.DEBUG_MATCHES), "Starting Waiting activity.")
-        // Remove match listener
-        comm?.removeMatchListener()
+        comm!!.removeMatchListener()
         // Define intent
         val intent = Intent(this, ChooseNicknameActivity::class.java)
         // Put data in bundle
-        bundle?.putSerializable("b_user", user)
-        bundle?.putSerializable("b_match", match)
+        bundle!!.putSerializable("b_user", user)
+        bundle!!.putSerializable("b_match", match)
 
         // Add bundle stored data
         intent.putExtras(bundle as Bundle)
@@ -431,17 +432,20 @@ class ChooseMatchActivity : AppCompatActivity(), View.OnClickListener {
     fun goWaitPlayersActivity() {
         Log.d(resources.getString(R.string.DEBUG_MATCHES), "Starting Waiting activity.")
         // Remove match listener
-        comm?.removeMatchListener()
+        comm!!.removeMatchListener()
         // Define intent
         val intent = Intent(this, WaitPlayers::class.java)
+
         // Put data in bundle
         bundle?.putSerializable("b_user", user)
         bundle?.putSerializable("b_match", match)
 
         // Add bundle stored data
         intent.putExtras(bundle as Bundle)
+
         // Start next activity
         startActivity(intent)
+
         // End activity
         finish()
     }

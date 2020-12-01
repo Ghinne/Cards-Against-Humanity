@@ -45,8 +45,8 @@ open class AwardingDbCommunicator(activity: AwardingActivity) : DbCommunicator()
 
     override fun onSetMatchSuccess() {}
     override fun onSetMatchFailure() {}
-    override fun onGetMatchSuccess(match: Match) {}
-    override fun onGetMatchFailure() {}
+    override fun onGetMatchSuccess(match: Match, by: String) {}
+    override fun onGetMatchFailure(by: String) {}
 
     /**
      * This callback is called when match is updated successfully,
@@ -93,6 +93,8 @@ open class AwardingDbCommunicator(activity: AwardingActivity) : DbCommunicator()
         (activity as AwardingActivity).showError(resources!!.getString(R.string.error_deleting))
         (activity as AwardingActivity).waitBeforeReturn()
     }
+
+    override fun onMatchDeleted() {}
 
     /**
      * This callback is called when match is deleted successfully,

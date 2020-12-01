@@ -117,12 +117,13 @@ open class SignInDbCommunicator(activity: SignInActivity) : DbCommunicator() {
     override fun onUpdateUserFailure() {}
     override fun onSetMatchSuccess() {}
     override fun onSetMatchFailure() {}
-    override fun onGetMatchSuccess(match: Match) {}
-    override fun onGetMatchFailure() {}
+    override fun onGetMatchSuccess(match: Match, by: String) {}
+    override fun onGetMatchFailure(by: String) {}
     override fun onUpdateMatchSuccess(by: String) {}
     override fun onUpdateMatchFailure() {}
     override fun onMatchListenerEvent(match: Match, by: String) {}
     override fun onMatchListenerFailure() {}
+    override fun onMatchDeleted() {}
     override fun onDeleteMatchSuccess() {}
     override fun onDeleteMatchFailure() {}
 }

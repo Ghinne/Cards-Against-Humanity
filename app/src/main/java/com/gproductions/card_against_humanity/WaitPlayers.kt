@@ -274,10 +274,9 @@ class WaitPlayers : AppCompatActivity(), View.OnClickListener {
      */
     fun goNicknameActivity() {
         Log.d(
-            resources.getString(R.string.DEBUG_MATCHES),
-            "Starting Nickname activity."
+            resources.getString(R.string.DEBUG_WAIT),
+            "Starting ChooseNickname activity."
         )
-        Log.d(resources.getString(R.string.DEBUG_MATCHES), "Starting Waiting activity.")
         // Define intent
         val intent = Intent(this, ChooseNicknameActivity::class.java)
 

@@ -111,8 +111,8 @@ open class WaitPlayersDbCommunicator(activity: WaitPlayers) : DbCommunicator() {
 
     override fun onSetMatchSuccess() {}
     override fun onSetMatchFailure() {}
-    override fun onGetMatchSuccess(match: Match) {}
-    override fun onGetMatchFailure() {}
+    override fun onGetMatchSuccess(match: Match, by: String) {}
+    override fun onGetMatchFailure(by: String) {}
 
     /**
      * This callback is called when match is changed in db
@@ -136,6 +136,7 @@ open class WaitPlayersDbCommunicator(activity: WaitPlayers) : DbCommunicator() {
         (activity as WaitPlayers).goNicknameActivity()
     }
 
+    override fun onMatchDeleted() {}
     override fun onDeleteMatchSuccess() {}
     override fun onDeleteMatchFailure() {}
 

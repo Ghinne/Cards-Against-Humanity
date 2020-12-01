@@ -70,6 +70,7 @@
     <string name="placement">Classifica: </string>
     <string name="round">Round: </string>
     <string name="error_getting_data">Errore nel ricevere i dati dal database! Riprova più tardi…</string>
+    <string name="error_match_deleted">Il match è stato cancellato!</string>
 
 
     <!-- AWARDING -->

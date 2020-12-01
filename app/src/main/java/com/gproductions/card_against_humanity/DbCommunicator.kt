@@ -191,7 +191,7 @@ abstract class DbCommunicator {
      * - Query db for match with matchName passed as parameter data,
      * - Call appropriate callback based on results,
      */
-    fun getMatchInDB(matchName: String) {
+    fun getMatchInDB(matchName: String, by: String="") {
         Log.d(tag, "Getting match in db.")
         // Getting user cards
         db.collection("matches")
@@ -201,18 +201,20 @@ abstract class DbCommunicator {
                 if (doc != null && doc.exists()) {
                     Log.d(tag, "Match retrieved.")
                     // Return match
-                    onGetMatchSuccess(doc.toObject(Match::class.java) as Match)
-                } else
+                    onGetMatchSuccess(doc.toObject(Match::class.java) as Match, by)
+                } else {
                     Log.d(tag, "Error match not found.")
+                    onGetMatchFailure(by)
+                }
             }
             .addOnFailureListener { e ->
                 Log.d(tag, "Error getting match. $e")
-                onGetMatchFailure()
+                onGetMatchFailure(by)
             }
     }
 
-    abstract fun onGetMatchSuccess(match: Match)
-    abstract fun onGetMatchFailure()
+    abstract fun onGetMatchSuccess(match: Match, by: String="")
+    abstract fun onGetMatchFailure(by: String="")
 
     /**
      * This function is used to update match in db,
@@ -260,6 +262,7 @@ abstract class DbCommunicator {
         matchListener = dRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.d(tag, "Listening for ready players error. $e")
+                onMatchListenerFailure()
                 return@addSnapshotListener
             }
 
@@ -268,13 +271,14 @@ abstract class DbCommunicator {
                 onMatchListenerEvent(snapshot.toObject(Match::class.java) as Match, by)
             } else {
                 Log.w(tag, "Match has been cancelled.")
-                onMatchListenerFailure()
+                onMatchDeleted()
             }
         }
     }
 
     abstract fun onMatchListenerEvent(match: Match, by: String = "")
     abstract fun onMatchListenerFailure()
+    abstract fun onMatchDeleted()
 
     /**
      * This function is used to remove match listener,

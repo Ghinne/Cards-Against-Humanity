@@ -473,6 +473,9 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             }
             // If player is dealer
             if (match!!.dealer == user!!.uid) {
+                // Enable Done button
+                findViewById<Button>(R.id.bt_done).visibility = View.VISIBLE
+
                 // Add listener for card selection
                 inLayout.setOnClickListener {
                     Log.d(
@@ -526,6 +529,15 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         // Going to awarding activity
         goAwardingActivity()
+    }
+
+    /**
+     * This function is used when match is deleted,
+     */
+    fun clearUserMatch() {
+        match = null
+        user!!.matchName = "nil"
+        comm!!.updateUserInDB(user!!.uid as String, hashMapOf("matchName" to "nil"))
     }
 
     /**

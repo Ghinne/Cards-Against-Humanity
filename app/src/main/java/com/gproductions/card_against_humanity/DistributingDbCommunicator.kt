@@ -111,7 +111,7 @@ open class DistributingDbCommunicator(activity: DistributingActivity) : DbCommun
      * This callback is called when match is retrieved from db,
      * - Update local match,
      */
-    override fun onGetMatchSuccess(match: Match) {
+    override fun onGetMatchSuccess(match: Match, by: String) {
         // Update activity match and go to next activity
         (activity as DistributingActivity).updateMatch(match)
     }
@@ -120,7 +120,7 @@ open class DistributingDbCommunicator(activity: DistributingActivity) : DbCommun
      * This callback is called when error occurred in db,
      * - Show error and go to Nickname activity
      */
-    override fun onGetMatchFailure() {
+    override fun onGetMatchFailure(by: String) {
         // Show error to user
         (activity as DistributingActivity).showError(resources!!.getString(R.string.error_no_matches))
         // Go to Nickname activity
@@ -164,6 +164,7 @@ open class DistributingDbCommunicator(activity: DistributingActivity) : DbCommun
                     )
                     // Disable listener
                     removeMatchListener()
+
                     // Update user and match in bundle
                     getMatchInDB(match.name as String)
                 }
@@ -191,6 +192,7 @@ open class DistributingDbCommunicator(activity: DistributingActivity) : DbCommun
         (activity as DistributingActivity).goNicknameActivity()
     }
 
+    override fun onMatchDeleted() {}
     override fun onDeleteMatchSuccess() {}
     override fun onDeleteMatchFailure() {}
 
