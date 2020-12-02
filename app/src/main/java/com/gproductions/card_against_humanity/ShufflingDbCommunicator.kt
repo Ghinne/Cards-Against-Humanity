@@ -48,22 +48,22 @@ open class ShufflingDbCommunicator(activity: ShufflingActivity) : DbCommunicator
                     Log.w(tag, "Black card shuffled.")
 
                     // Set shuffled in activity
-                    (activity as ShufflingActivity).setBlackShuffled(cards)
+                    activity!!.setBlackShuffled(cards)
                 } else {
                     Log.w(tag, "Black cards set not found.")
                     // Show error to user
-                    (activity as ShufflingActivity).showError(resources!!.getString(R.string.error_cards) + "Black.")
+                    activity!!.showError(resources!!.getString(R.string.error_cards) + "Black.")
 
                     // Go to nickname activity
-                    (activity as ShufflingActivity).goNicknameActivity()
+                    activity!!.goNicknameActivity()
                 }
             }
             .addOnFailureListener { e ->
                 Log.d(tag, "Error getting black cards.$e")
                 // Show error to user
-                (activity as ShufflingActivity).showError(resources!!.getString(R.string.error_cards) + "Black.")
+                activity!!.showError(resources!!.getString(R.string.error_cards) + "Black.")
                 // Go to nickname activity
-                (activity as ShufflingActivity).goNicknameActivity()
+                activity!!.goNicknameActivity()
             }
     }
 
@@ -89,22 +89,22 @@ open class ShufflingDbCommunicator(activity: ShufflingActivity) : DbCommunicator
                     Log.w(tag, "White card shuffled.")
 
                     // Set shuffled
-                    (activity as ShufflingActivity).setWhiteShuffled(cards)
+                    activity!!.setWhiteShuffled(cards)
                 } else {
                     Log.w(tag, "white cards set not found.")
                     // Show error to user
-                    (activity as ShufflingActivity).showError(resources!!.getString(R.string.error_cards) + "White.")
+                    activity!!.showError(resources!!.getString(R.string.error_cards) + "White.")
 
                     // Go to nickname activity
-                    (activity as ShufflingActivity).goNicknameActivity()
+                    activity!!.goNicknameActivity()
                 }
             }
             .addOnFailureListener { e ->
                 Log.d(tag, "Error getting white cards. $e")
                 // Show error to user
-                (activity as ShufflingActivity).showError(resources!!.getString(R.string.error_cards) + "White.")
+                activity!!.showError(resources!!.getString(R.string.error_cards) + "White.")
                 // Go to nickname activity
-                (activity as ShufflingActivity).goNicknameActivity()
+                activity!!.goNicknameActivity()
             }
     }
 
@@ -118,8 +118,27 @@ open class ShufflingDbCommunicator(activity: ShufflingActivity) : DbCommunicator
     override fun onUpdateUserFailure() {}
     override fun onSetMatchSuccess() {}
     override fun onSetMatchFailure() {}
-    override fun onGetMatchSuccess(match: Match, by: String) {}
-    override fun onGetMatchFailure(by: String) {}
+
+    /**
+     * This callback is called when match is retrieved from db,
+     * @param match updated match
+     * @param by code to get calling function
+     * - Update local match,
+     */
+    override fun onGetMatchSuccess(match: Match, by: String) {
+        activity!!.updateLocalMatch(match)
+    }
+
+    /**
+     * This callback is called when error occurred in db,
+     * - Show error and go to Nickname activity
+     */
+    override fun onGetMatchFailure(by: String) {
+        // Show error to user
+        activity!!.showError(resources?.getString(R.string.error_match_cancelled).toString())
+        // Go in Nickname activity
+        activity!!.goNicknameActivity()
+    }
 
     /**
      * This callback is called when match is updated in db,
@@ -127,7 +146,7 @@ open class ShufflingDbCommunicator(activity: ShufflingActivity) : DbCommunicator
      */
     override fun onUpdateMatchSuccess(by: String) {
         // Update bundle and return to distributing activity
-        (activity as ShufflingActivity).goDistributingActivity()
+        activity!!.goDistributingActivity()
     }
 
     /**
@@ -136,7 +155,7 @@ open class ShufflingDbCommunicator(activity: ShufflingActivity) : DbCommunicator
      */
     override fun onUpdateMatchFailure() {
         // Show error to user
-        (activity as ShufflingActivity).showError(resources!!.getString(R.string.error_cards))
+        activity!!.showError(resources!!.getString(R.string.error_cards))
     }
 
     override fun onMatchListenerEvent(match: Match, by: String) {}

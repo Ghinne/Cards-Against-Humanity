@@ -139,7 +139,6 @@ class ChooseMatchActivity : AppCompatActivity(), View.OnClickListener {
         super.onSaveInstanceState(outState)
         Log.d(resources.getString(R.string.DEBUG_MATCHES), "Saving state.")
         outState.putSerializable("b_user", user)
-        outState.putSerializable("b_match", match)
     }
 
     /**
@@ -416,7 +415,6 @@ class ChooseMatchActivity : AppCompatActivity(), View.OnClickListener {
         val intent = Intent(this, ChooseNicknameActivity::class.java)
         // Put data in bundle
         bundle!!.putSerializable("b_user", user)
-        bundle!!.putSerializable("b_match", match)
 
         // Add bundle stored data
         intent.putExtras(bundle as Bundle)
@@ -438,7 +436,6 @@ class ChooseMatchActivity : AppCompatActivity(), View.OnClickListener {
 
         // Put data in bundle
         bundle?.putSerializable("b_user", user)
-        bundle?.putSerializable("b_match", match)
 
         // Add bundle stored data
         intent.putExtras(bundle as Bundle)

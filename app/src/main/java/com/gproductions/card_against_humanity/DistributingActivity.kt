@@ -59,8 +59,6 @@ class DistributingActivity : AppCompatActivity() {
 
         // Getting user and match
         user = bundle?.getSerializable("b_user") as User?
-        match = bundle?.getSerializable("b_match") as Match?
-
 
         // Checking for user in bundle
         if (user == null) {
@@ -74,7 +72,7 @@ class DistributingActivity : AppCompatActivity() {
         }
 
         // Checking for match in bundle
-        if (match == null) {
+        if (user!!.matchName == "nil") {
             // If no match in bundle
             Log.d(resources.getString(R.string.DEBUG_DISTRIBUTING), "There is no match in bundle.")
             // Show error to user
@@ -82,26 +80,15 @@ class DistributingActivity : AppCompatActivity() {
             // Going to match activity
             goNicknameActivity()
         }
+    }
 
-        // If actual player is dealer
-        if (match!!.dealer == user!!.uid) {
-
-            // Initializing hash map
-            for (player in match!!.players)
-                usersCardsNeeded[player] = resources.getInteger(R.integer.WHITE_CARDS_PER_PLAYER)
-
-            // Add listener for distributing players
-            comm!!.addMatchListenerInDB(match!!.name as String, "dealer")
-        } else {
-            // Player wait for distributing
-            comm!!.updateMatchInDB(
-                match!!.name as String,
-                hashMapOf("distributing" to FieldValue.arrayUnion(user!!.uid)),
-                "distributing"
-            )
-            // Listen for distributing mode turn off
-            comm!!.addMatchListenerInDB(match!!.name as String, "player")
-        }
+    /**
+     * This function is called after activity is created,
+     */
+    override fun onStart() {
+        super.onStart()
+        // Get match in db
+        comm!!.getMatchInDB(user!!.matchName)
     }
 
     /**
@@ -112,7 +99,48 @@ class DistributingActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         Log.d(resources.getString(R.string.DEBUG_DISTRIBUTING), "Saving state.")
         outState.putSerializable("b_user", user)
-        outState.putSerializable("b_match", match)
+    }
+
+    /**
+     * This function is called after getting match in db,
+     * @param dbMatch updated db match
+     */
+    fun updateLocalMatch(dbMatch: Match) {
+        Log.d(resources.getString(R.string.DEBUG_DISTRIBUTING),
+            "Updating local match and start distributing.")
+        // Update local match
+        match = dbMatch
+
+        // If actual player is dealer
+        if (match!!.dealer == user!!.uid) {
+            if (match!!.distributing.containsAll(match!!.players))
+                distributeCards()
+            else {
+                // Player wait for distributing
+                comm!!.updateMatchInDB(
+                    match!!.name as String,
+                    hashMapOf("distributing" to FieldValue.arrayUnion(user!!.uid)),
+                    "distributing"
+                )
+
+                // Initializing hash map
+                for (player in match!!.players)
+                    usersCardsNeeded[player] =
+                        resources.getInteger(R.integer.WHITE_CARDS_PER_PLAYER)
+
+                // Add listener for distributing players
+                comm!!.addMatchListenerInDB(match!!.name as String, "dealer")
+            }
+        } else {
+            // Player wait for distributing
+            comm!!.updateMatchInDB(
+                match!!.name as String,
+                hashMapOf("distributing" to FieldValue.arrayUnion(user!!.uid)),
+                "distributing"
+            )
+            // Listen for distributing mode turn off
+            comm!!.addMatchListenerInDB(match!!.name as String, "player")
+        }
     }
 
     /**
@@ -277,16 +305,6 @@ class DistributingActivity : AppCompatActivity() {
     }
 
     /**
-     * This function is used to update match with db one,
-     * @param dbMatch db updated match
-     */
-    fun updateMatch(dbMatch: Match) {
-        // Update match
-        match = dbMatch
-        goGameActivity()
-    }
-
-    /**
      * This function show a popup error message to user,
      * @param str error string to show
      */
@@ -307,7 +325,7 @@ class DistributingActivity : AppCompatActivity() {
         val intent = Intent(this, ChooseNicknameActivity::class.java)
         // Put data in bundle
         bundle?.putSerializable("b_user", user)
-        bundle?.putSerializable("b_match", match)
+
         // Add bundle stored data in previous activity
         intent.putExtras(bundle as Bundle)
         // Start previous activity
@@ -325,12 +343,6 @@ class DistributingActivity : AppCompatActivity() {
         // Define intent
         val intent = Intent()
 
-        // Put data in bundle
-        bundle?.putSerializable("b_user", user)
-        bundle?.putSerializable("b_match", match)
-
-        // Add bundle stored data in previous activity
-        intent.putExtras(bundle as Bundle)
         // Return to distributing
         setResult(RESULT_OK, intent)
         // End activity
@@ -347,7 +359,6 @@ class DistributingActivity : AppCompatActivity() {
 
         // Put data in bundle
         bundle?.putSerializable("b_user", user)
-        bundle?.putSerializable("b_match", match)
 
         // Add bundle stored data in next activity
         intent.putExtras(bundle as Bundle)
@@ -374,20 +385,8 @@ class DistributingActivity : AppCompatActivity() {
             resources.getInteger(R.integer.SHUFFLING_CODE) -> {
                 Log.d(
                     resources.getString(R.string.DEBUG_DISTRIBUTING),
-                    "Shuffling terminated."
+                    "Shuffling activity returned."
                 )
-                // Get shuffled card set
-                if (data != null) {
-                    // Update match
-                    match =  data.extras?.getSerializable("b_match") as Match
-                } else {
-                    Log.d(
-                        resources.getString(R.string.DEBUG_DISTRIBUTING),
-                        "NO DATA from shuffling."
-                    )
-                }
-                // Redo distribution operation to ensure that all players have cards
-                distributeCards()
             }
         }
     }

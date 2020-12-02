@@ -56,7 +56,6 @@ class WaitPlayers : AppCompatActivity(), View.OnClickListener {
 
         // Getting user and match
         user = bundle!!.getSerializable("b_user") as User?
-        match = bundle!!.getSerializable("b_match") as Match?
 
         // Checking for user in bundle
         if (user == null) {
@@ -71,7 +70,7 @@ class WaitPlayers : AppCompatActivity(), View.OnClickListener {
             Log.d(resources.getString(R.string.DEBUG_WAIT), "User find.")
 
         // Checking for match in bundle
-        if (match == null) {
+        if (user!!.matchName == "nil") {
             // If no match in bundle
             Log.d(resources.getString(R.string.DEBUG_WAIT), "There is no match in bundle.")
             // Show error to user
@@ -80,21 +79,8 @@ class WaitPlayers : AppCompatActivity(), View.OnClickListener {
             // Going to nickname activity
             goNicknameActivity()
         } else {
-
-            Log.d(resources.getString(R.string.DEBUG_WAIT), "Match find.")
-            // If match is active go next activity
-            if (match!!.active as Boolean)
-                // Go to game activity
-                goGameActivity()
-            else
-                // Add listener
-                comm?.addMatchListenerInDB(match!!.name as String)
-
-            // Set button start visible if user is creator
-            if (match!!.dealer == user!!.uid) {
-                showStartButton()
-            } else
-                hideStartButton()
+            // Get match
+            comm!!.getMatchInDB(user!!.matchName)
         }
     }
 
@@ -119,7 +105,6 @@ class WaitPlayers : AppCompatActivity(), View.OnClickListener {
         super.onSaveInstanceState(outState)
         Log.d(resources.getString(R.string.DEBUG_WAIT), "Saving state.")
         outState.putSerializable("b_user", user)
-        outState.putSerializable("b_match", match)
     }
 
     /**
@@ -166,6 +151,29 @@ class WaitPlayers : AppCompatActivity(), View.OnClickListener {
 
         // Clear user and go to matches activity
         resetUser()
+    }
+
+    /**
+     * This function is called after getting match in db,
+     * @param dbMatch updated db match
+     */
+    fun updateLocalMatch(dbMatch: Match) {
+        Log.d(resources.getString(R.string.DEBUG_WAIT), "Match find.")
+        match = dbMatch
+
+        // If match is active go next activity
+        if (match!!.active as Boolean)
+        // Go to game activity
+            goGameActivity()
+        else
+        // Add listener
+            comm?.addMatchListenerInDB(match!!.name as String)
+
+        // Set button start visible if user is creator
+        if (match!!.dealer == user!!.uid) {
+            showStartButton()
+        } else
+            hideStartButton()
     }
 
     /**
@@ -259,7 +267,6 @@ class WaitPlayers : AppCompatActivity(), View.OnClickListener {
 
         // Put data in bundle
         bundle?.putSerializable("b_user", user)
-        bundle?.putSerializable("b_match", match)
 
         // Add bundle stored data in previous activity
         intent.putExtras(bundle as Bundle)
@@ -285,7 +292,6 @@ class WaitPlayers : AppCompatActivity(), View.OnClickListener {
 
         // Put data in bundle
         bundle?.putSerializable("b_user", user)
-        bundle?.putSerializable("b_match", match)
 
         // Add bundle stored data
         intent.putExtras(bundle as Bundle)
@@ -308,7 +314,6 @@ class WaitPlayers : AppCompatActivity(), View.OnClickListener {
 
         // Put data in bundle
         bundle?.putSerializable("b_user", user)
-        bundle?.putSerializable("b_match", match)
 
         // Add bundle stored data in next activity
         intent.putExtras(bundle as Bundle)

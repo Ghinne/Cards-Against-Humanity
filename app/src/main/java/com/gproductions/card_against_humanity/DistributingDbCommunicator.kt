@@ -38,14 +38,14 @@ open class DistributingDbCommunicator(activity: DistributingActivity) : DbCommun
             .addOnSuccessListener { doc ->
                 if (doc != null && doc.exists()) {
                     // Add retrieved card to user ones
-                    (activity as DistributingActivity).setPlayerCard(uid, doc.toObject(WhiteCard::class.java) as WhiteCard)
+                    activity!!.setPlayerCard(uid, doc.toObject(WhiteCard::class.java) as WhiteCard)
                 } else {
                     Log.d(tag, "Card $id not found.")
                 }
             }
             .addOnFailureListener { e ->
                 Log.d(tag, "Error getting $id card. $e")
-                (activity as DistributingActivity).showError(resources!!.getString(R.string.error_no_card))
+                activity!!.showError(resources!!.getString(R.string.error_no_card))
             }
     }
 
@@ -68,7 +68,7 @@ open class DistributingDbCommunicator(activity: DistributingActivity) : DbCommun
                     Log.d(tag, "Black card retrieved."
                     )
                     // Set black card in match
-                    (activity as DistributingActivity).setBlackCard(doc.toObject(BlackCard::class.java) as BlackCard)
+                    activity!!.setBlackCard(doc.toObject(BlackCard::class.java) as BlackCard)
                 } else {
                     Log.d(tag, "Card $id not found.")
                 }
@@ -93,7 +93,7 @@ open class DistributingDbCommunicator(activity: DistributingActivity) : DbCommun
      */
     override fun onSetMatchSuccess() {
         // Go next activity
-        (activity as DistributingActivity).goGameActivity()
+        activity!!.goGameActivity()
     }
 
     /**
@@ -102,18 +102,19 @@ open class DistributingDbCommunicator(activity: DistributingActivity) : DbCommun
      */
     override fun onSetMatchFailure() {
         // Show error to user
-        (activity as DistributingActivity).showError(resources!!.getString(R.string.error_update))
+        activity!!.showError(resources!!.getString(R.string.error_update))
         // Go to Nickname activity
-        (activity as DistributingActivity).goNicknameActivity()
+        activity!!.goNicknameActivity()
     }
 
     /**
      * This callback is called when match is retrieved from db,
+     * @param match updated match
+     * @param by code to get calling function
      * - Update local match,
      */
     override fun onGetMatchSuccess(match: Match, by: String) {
-        // Update activity match and go to next activity
-        (activity as DistributingActivity).updateMatch(match)
+        activity!!.updateLocalMatch(match)
     }
 
     /**
@@ -122,9 +123,9 @@ open class DistributingDbCommunicator(activity: DistributingActivity) : DbCommun
      */
     override fun onGetMatchFailure(by: String) {
         // Show error to user
-        (activity as DistributingActivity).showError(resources!!.getString(R.string.error_no_matches))
-        // Go to Nickname activity
-        (activity as DistributingActivity).goNicknameActivity()
+        activity!!.showError(resources?.getString(R.string.error_match_cancelled).toString())
+        // Go in Nickname activity
+        activity!!.goNicknameActivity()
     }
 
     /**
@@ -134,7 +135,7 @@ open class DistributingDbCommunicator(activity: DistributingActivity) : DbCommun
     override fun onUpdateMatchSuccess(by: String) {
         when(by){
             "cards" -> {// Adding new cards to empty cards set
-                        (activity as DistributingActivity).goShuffleActivity()}
+                        activity!!.goShuffleActivity()}
         }
     }
 
@@ -144,9 +145,9 @@ open class DistributingDbCommunicator(activity: DistributingActivity) : DbCommun
      */
     override fun onUpdateMatchFailure() {
         // Show error to user
-        (activity as DistributingActivity).showError(resources!!.getString(R.string.error_cleaning_cards))
+        activity!!.showError(resources!!.getString(R.string.error_cleaning_cards))
         // Go to Nickname activity
-        (activity as DistributingActivity).goNicknameActivity()
+        activity!!.goNicknameActivity()
     }
 
     /**
@@ -165,17 +166,19 @@ open class DistributingDbCommunicator(activity: DistributingActivity) : DbCommun
                     // Disable listener
                     removeMatchListener()
 
-                    // Update user and match in bundle
-                    getMatchInDB(match.name as String)
+                    // Go back to Game activity
+                    activity!!.goGameActivity()
                 }
             }
             "dealer" -> {
                 if (match.distributing.containsAll(match.players))                 {
                     Log.d(tag, "All users in distributing, launch distributing.")
+                    Log.d(tag, "DEALER $match ${auth.uid}")
+
                     // Disable listener
                     removeMatchListener()
                     // Distribute cards
-                    (activity as DistributingActivity).launchDistribute()
+                    activity!!.launchDistribute()
                 }
             }
         }
@@ -187,9 +190,9 @@ open class DistributingDbCommunicator(activity: DistributingActivity) : DbCommun
      */
     override fun onMatchListenerFailure() {
         // Show error to user
-        (activity as DistributingActivity).showError(resources!!.getString(R.string.error_no_matches))
+        activity!!.showError(resources!!.getString(R.string.error_no_matches))
         // Go to Nickname activity
-        (activity as DistributingActivity).goNicknameActivity()
+        activity!!.goNicknameActivity()
     }
 
     override fun onMatchDeleted() {}

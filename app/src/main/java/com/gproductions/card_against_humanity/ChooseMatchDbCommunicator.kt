@@ -44,14 +44,14 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
                 Log.d(tag, "Name already used.")
 
                 // Disable match create button
-                (activity as ChooseMatchActivity).disableCreate()
+                activity!!.disableCreate()
                 // Show error to user
-                (activity as ChooseMatchActivity).showError(resources?.getString(R.string.already_used_name).toString())
+                activity!!.showError(resources?.getString(R.string.already_used_name).toString())
             } else {
                 // Match name not used
                 Log.d(tag, "Match name feasible.")
                 // Enable match create button
-                (activity as ChooseMatchActivity).enableCreate()
+                activity!!.enableCreate()
             }
         }
             .addOnFailureListener { e ->
@@ -101,7 +101,7 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
                         .addOnFailureListener { e ->
                             Log.d(tag, "Error deleting match. $e")
                             // Show error to user
-                            (activity as ChooseMatchActivity).showError(resources?.getString(R.string.error_update) + "Full match.")
+                            activity!!.showError(resources?.getString(R.string.error_update) + "Full match.")
                         }
                 } else {
                     // Otherwise delete only user from players list
@@ -117,7 +117,7 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
                             .addOnFailureListener { e ->
                                 Log.d(tag, "Error updating dealer. $e")
                                 // Show error to user
-                                (activity as ChooseMatchActivity).showError(resources?.getString(R.string.error_update) + "Setting new dealer.")
+                                activity!!.showError(resources?.getString(R.string.error_update) + "Setting new dealer.")
                             }
                     }
 
@@ -132,11 +132,12 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
                         .addOnFailureListener { e ->
                             Log.e(tag, "Error deleting user from match in db. $e")
                             // Show error to user
-                            (activity as ChooseMatchActivity).showError(resources?.getString(R.string.error_update) + "Player.")
+                            activity!!.showError(resources?.getString(R.string.error_update) + "Player.")
                         }
                 }
             } else {
-                Log.d(tag, "Error getting match.")
+                Log.d(tag, "Match already deleted.")
+                onRemovePlayerSuccess(by)
             }
         }
     }
@@ -146,7 +147,7 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
      * @param by code to get calling function
      */
     private fun onRemovePlayerSuccess(by: String) {
-        (activity as ChooseMatchActivity).afterPlayerRemove(by)
+        activity!!.afterPlayerRemove(by)
     }
 
     /**
@@ -174,7 +175,7 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
                 return@addSnapshotListener
             }
             // Clear ready matches
-            (activity as ChooseMatchActivity).clearReadyMatches()
+            activity!!.clearReadyMatches()
 
             // Check snapshot
             if (snapshot != null && snapshot.documents.isNotEmpty()) {
@@ -191,7 +192,7 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
                         continue
 
                     // Add ready match to list
-                    (activity as ChooseMatchActivity).addReadyMatchView(match)
+                    activity!!.addReadyMatchView(match)
                 }
             } else {
                 Log.d(tag, "Ready match list is empty.")
@@ -212,7 +213,7 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
      */
     override fun onSetMatchSuccess() {
         // Set user as match dealer
-        (activity as ChooseMatchActivity).prepareDealer()
+        activity!!.prepareDealer()
     }
 
     /**
@@ -221,9 +222,9 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
      */
     override fun onSetMatchFailure() {
         // Show error to user
-        (activity as ChooseMatchActivity).showError(resources?.getString(R.string.error_update).toString())
+        activity!!.showError(resources?.getString(R.string.error_update).toString())
         // Go nickname activity
-        (activity as ChooseMatchActivity).goNicknameActivity()
+        activity!!.goNicknameActivity()
     }
 
     /**
@@ -234,10 +235,10 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
         when (by) {
             "resume"-> {
                     // Update active match to resume
-                    (activity as ChooseMatchActivity).updateMatchToResume(match)}
+                    activity!!.updateMatchToResume(match)}
             "check" -> {
                     // Enable resume
-                    (activity as ChooseMatchActivity).enableReturn()}
+                    activity!!.enableReturn()}
         }
     }
     /**
@@ -248,9 +249,9 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
         when (by) {
             "resume"-> {
                 // Show error to user
-                (activity as ChooseMatchActivity).showError(resources?.getString(R.string.error_returning).toString())
+                activity!!.showError(resources?.getString(R.string.error_returning).toString())
                 // Go to Nickname activity
-                //(activity as ChooseMatchActivity).goNicknameActivity()
+                //activity!!.goNicknameActivity()
                 }
         }
     }
@@ -261,7 +262,7 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
      */
     override fun onUpdateUserSuccess() {
         // Go to the next activity
-        (activity as ChooseMatchActivity).goWaitPlayersActivity()
+        activity!!.goWaitPlayersActivity()
     }
 
     /**
@@ -270,9 +271,9 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
      */
     override fun onUpdateUserFailure() {
         // Show error to user
-        (activity as ChooseMatchActivity).showError(resources?.getString(R.string.error_update).toString())
+        activity!!.showError(resources?.getString(R.string.error_update).toString())
         // Go Nickname activity
-        (activity as ChooseMatchActivity).goNicknameActivity()
+        activity!!.goNicknameActivity()
     }
 
     /**
@@ -281,7 +282,7 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
      */
     override fun onUpdateMatchSuccess(by: String) {
         // return to activity
-        (activity as ChooseMatchActivity).playerAddedInMatch()
+        activity!!.playerAddedInMatch()
     }
 
     /**
@@ -290,9 +291,9 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
      */
     override fun onUpdateMatchFailure() {
         // Show error to user
-        (activity as ChooseMatchActivity).showError(resources?.getString(R.string.error_adding_user).toString())
+        activity!!.showError(resources?.getString(R.string.error_adding_user).toString())
         // Go Nickname activity
-        (activity as ChooseMatchActivity).goNicknameActivity()
+        activity!!.goNicknameActivity()
     }
 
     override fun onMatchListenerEvent(match: Match, by: String) {}

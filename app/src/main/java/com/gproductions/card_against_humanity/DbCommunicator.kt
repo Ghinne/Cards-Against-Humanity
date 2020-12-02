@@ -172,12 +172,12 @@ abstract class DbCommunicator {
         // Update db
         dRef.set(match)
             .addOnSuccessListener {
-                Log.d(tag, "Match created.")
+                Log.d(tag, "Match sat")
                 onSetMatchSuccess()
             }
             .addOnFailureListener { e ->
                 // Error in updating db
-                Log.d(tag, "Error in match creation or joining.$e")
+                Log.d(tag, "Error in match setting.$e")
                 onSetMatchFailure()
             }
     }

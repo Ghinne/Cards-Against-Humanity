@@ -53,21 +53,19 @@ class ShufflingActivity : AppCompatActivity() {
 
         // Getting user and match
         user = bundle?.getSerializable("b_user") as User?
-        match = bundle?.getSerializable("b_match") as Match?
 
         // Checking for user in bundle
         if (user == null) {
+            // If no user in bundle
             Log.d(resources.getString(R.string.DEBUG_SHUFFLING), "There is no user in bundle.")
-
             // Show error to user
             showError(getString(R.string.user_not_logged))
-
             // Going to match activity
             goNicknameActivity()
         }
 
         // Checking for match in bundle
-        if (match == null) {
+        if (user!!.matchName == "nil") {
             // If no match in bundle
             Log.d(resources.getString(R.string.DEBUG_SHUFFLING), "There is no match in bundle.")
             // Show error to user
@@ -75,11 +73,15 @@ class ShufflingActivity : AppCompatActivity() {
             // Going to match activity
             goNicknameActivity()
         }
+    }
 
-        // If player is dealer
-        if (match!!.dealer == user!!.uid)
-        // Shuffle cards (DEALER)
-            shuffleCards()
+    /**
+     * This function is called after activity is created,
+     */
+    override fun onStart() {
+        super.onStart()
+        // Get match in db
+        comm!!.getMatchInDB(user!!.matchName)
     }
 
     /**
@@ -90,7 +92,19 @@ class ShufflingActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState)
         Log.d(resources.getString(R.string.DEBUG_SHUFFLING), "Saving state.")
         outState.putSerializable("b_user", user)
-        outState.putSerializable("b_match", match)
+    }
+
+    /**
+     * This function is called after getting match in db,
+     * @param dbMatch updated db match
+     */
+    fun updateLocalMatch(dbMatch: Match) {
+        // Update local match
+        match = dbMatch
+        // If player is dealer
+        if (match!!.dealer == user!!.uid)
+        // Shuffle cards (DEALER)
+            shuffleCards()
     }
 
     /**
@@ -188,7 +202,6 @@ class ShufflingActivity : AppCompatActivity() {
         val intent = Intent(this, ChooseNicknameActivity::class.java)
         // Put data in bundle
         bundle?.putSerializable("b_user", user)
-        bundle?.putSerializable("b_match", match)
 
         // Add bundle stored data in previous activity
         intent.putExtras(bundle as Bundle)
@@ -208,7 +221,6 @@ class ShufflingActivity : AppCompatActivity() {
 
         // Put data in bundle
         bundle?.putSerializable("b_user", user)
-        bundle?.putSerializable("b_match", match)
 
         // Add bundle stored data in next activity
         intent.putExtras(bundle as Bundle)

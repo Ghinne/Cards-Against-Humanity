@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.firestore.FieldValue
 import org.apache.commons.lang3.StringUtils
 
 /**
@@ -57,7 +56,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         // Getting user and match
         user = bundle?.getSerializable("b_user") as User?
-        match = bundle?.getSerializable("b_match") as Match?
 
         // Checking for user in bundle
         if (user == null) {
@@ -71,21 +69,22 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // Checking for match in bundle
-        if (match == null) {
+        if (user!!.matchName == "nil") {
             // If no match in bundle
             Log.d(resources.getString(R.string.DEBUG_GAME), "There is no match in bundle.")
             // Show error to user
             showError(resources.getString(R.string.error_no_matches))
             // Going to match activity
             goNicknameActivity()
-        }
+        } else {
 
-        // Bind view to layout
-        val btDone = findViewById<Button>(R.id.bt_done)
-        val btExit = findViewById<Button>(R.id.bt_exit_game)
-        // Set a listener for buttons
-        btDone.setOnClickListener(this)
-        btExit.setOnClickListener(this)
+            // Bind view to layout
+            val btDone = findViewById<Button>(R.id.bt_done)
+            val btExit = findViewById<Button>(R.id.bt_exit_game)
+            // Set a listener for buttons
+            btDone.setOnClickListener(this)
+            btExit.setOnClickListener(this)
+        }
     }
 
     /**
@@ -106,10 +105,49 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         if (bundle?.getBoolean("end") != null && bundle?.getBoolean("end") as Boolean)
             return
 
+        // Get updated match in db
+        comm!!.getMatchInDB(user!!.matchName)
+    }
+
+    /**
+     * This function is used by buttons callbacks,
+     * @param v view calling this callback
+     */
+    override fun onClick(v: View?) {
+        Log.d(resources.getString(R.string.DEBUG_GAME), "Button pressed.")
+        if (v != null) {
+            // Getting which button has been pressed
+            when (v.id) {
+                R.id.bt_done -> choiceDone()
+                R.id.bt_exit_game -> goNicknameActivity()
+            }
+        }
+    }
+
+    /**
+     * This function is used to save app state,
+     * @param outState bundle with data to keep
+     */
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.d(resources.getString(R.string.DEBUG_GAME), "Saving state.")
+        outState.putSerializable("b_user", user)
+        outState.putBoolean("dealer_distribute", bundle!!.getBoolean("dealer_distribute"))
+    }
+
+    /**
+     * This function is called after getting match in db,
+     * @param dbMatch updated db match
+     */
+    fun updateLocalMatch(dbMatch: Match) {
+        // Update local match with db one
+        match = dbMatch
+
         // Check if game in distributing mode
-        if (match!!.distributing.isNotEmpty())
+        if (match!!.distributing.isNotEmpty() || bundle!!.getBoolean("dealer_distribute")) {
+            Log.d(resources.getString(R.string.DEBUG_GAME), "Distributing ${match!!.distributing}")
             goDistributingActivity()
-        else {
+        } else {
             // Clear lists
             chosenCards.clear()
             layoutsIndex.clear()
@@ -143,32 +181,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 plotWhiteCards()
             }
         }
-    }
-
-    /**
-     * This function is used by buttons callbacks,
-     * @param v view calling this callback
-     */
-    override fun onClick(v: View?) {
-        Log.d(resources.getString(R.string.DEBUG_GAME), "Button pressed.")
-        if (v != null) {
-            // Getting which button has been pressed
-            when (v.id) {
-                R.id.bt_done -> choiceDone()
-                R.id.bt_exit_game -> goNicknameActivity()
-            }
-        }
-    }
-
-    /**
-     * This function is used to save app state,
-     * @param outState bundle with data to keep
-     */
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        Log.d(resources.getString(R.string.DEBUG_GAME), "Saving state.")
-        outState.putSerializable("b_user", user)
-        outState.putSerializable("b_match", match)
     }
 
     /**
@@ -231,21 +243,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             else
                 match!!.dealer = match!!.players[match!!.players.indexOf(match!!.dealer as String) + 1]
 
-            // Add distributing
-            match!!.distributing.add(user!!.uid as String)
-
             // Update match
             comm?.setMatchInDB(match!!)
-
-            // If actual round is not the last one
-            if (match!!.round < match!!.rounds as Int) {
-                // Go distributing activity
-                goDistributingActivity()
-            } else {
-                // Go awarding activity for final awarding
-                goAwardingActivity()
-            }
-
         } else {
             // Player clicked done button
             Log.d(resources.getString(R.string.DEBUG_GAME), "Done button clicked by PLAYER.")
@@ -275,6 +274,20 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 // Add a listener for awarding activity
                 comm?.enableWinnerListener()
             }
+        }
+    }
+
+    /**
+     * This function is called once match is sat in db,
+     */
+    fun matchSet() {
+        // If actual round is not the last one
+        if (match!!.round < match!!.rounds as Int) {
+            // Go distributing activity
+            goDistributingActivity()
+        } else {
+            // Go awarding activity for final awarding
+            goAwardingActivity()
         }
     }
 
@@ -567,7 +580,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         // Put data in bundle
         bundle?.putSerializable("b_user", user)
-        bundle?.putSerializable("b_match", match)
 
         // Add bundle stored data in previous activity
         intent.putExtras(bundle as Bundle)
@@ -592,7 +604,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         // Put data in bundle
         bundle?.putSerializable("b_user", user)
-        bundle?.putSerializable("b_match", match)
 
         // Add bundle stored data
         intent.putExtras(bundle as Bundle)
@@ -626,7 +637,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
         // Put data in bundle
         bundle?.putSerializable("b_user", user)
-        bundle?.putSerializable("b_match", match)
 
         // Add bundle stored data
         intent.putExtras(bundle as Bundle)
@@ -655,40 +665,15 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                     resources.getString(R.string.DEBUG_GAME),
                     "Distributing terminated."
                 )
+                bundle!!.putBoolean("dealer_distribute", false)
 
-                // Get shuffled card set
-                if (data != null) {
-                    // Update match
-                    match = data.extras?.getSerializable("b_match") as Match
-                    Log.d(
-                        resources.getString(R.string.DEBUG_GAME),
-                        "Updated match obtained."
-                    )
-                } else {
-                    Log.d(
-                        resources.getString(R.string.DEBUG_GAME),
-                        "NO DATA from Distributing."
-                    )
-                }
             }
             resources.getInteger(R.integer.AWARDING_CODE) -> {
                 Log.d(
                     resources.getString(R.string.DEBUG_GAME),
                     "AwardingActivity terminated."
                 )
-
-                // If player is dealer
-                if (match!!.dealer == user!!.uid) {
-                    // Enable dealer distributing locally
-                    match!!.distributing.add(user!!.uid as String)
-                    // Enable dealer distributing in db
-                    comm?.updateMatchInDB(
-                        match!!.name as String,
-                        hashMapOf(
-                            "distributing" to FieldValue.arrayUnion(user!!.uid)
-                        )
-                    )
-                }
+                bundle!!.putBoolean("dealer_distribute", true)
             }
 
             resources.getInteger(R.integer.END_CODE) -> {

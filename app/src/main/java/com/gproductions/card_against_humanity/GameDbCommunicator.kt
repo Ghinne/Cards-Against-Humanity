@@ -29,7 +29,7 @@ open class GameDbCommunicator(activity: GameActivity) : DbCommunicator() {
      */
     override fun onUpdateUserSuccess() {
         // User match clear returning to Nickname activity
-        (activity as GameActivity).goNicknameActivity()
+        activity!!.goNicknameActivity()
     }
 
     /**
@@ -38,12 +38,17 @@ open class GameDbCommunicator(activity: GameActivity) : DbCommunicator() {
      */
     override fun onUpdateUserFailure() {
         // Show error to user
-        (activity as GameActivity).showError(resources?.getString(R.string.error_update).toString())
+        activity!!.showError(resources?.getString(R.string.error_update).toString())
         // Go in Nickname activity
-        (activity as GameActivity).goNicknameActivity()
+        activity!!.goNicknameActivity()
     }
 
-    override fun onSetMatchSuccess() {}
+    /**
+     * This callback is called when match is set in db,
+     */
+    override fun onSetMatchSuccess() {
+        activity!!.matchSet()
+    }
 
     /**
      * This callback is called when error occurred in db,
@@ -51,13 +56,32 @@ open class GameDbCommunicator(activity: GameActivity) : DbCommunicator() {
      */
     override fun onSetMatchFailure() {
         // Show error to user
-        (activity as GameActivity).showError(resources?.getString(R.string.error_update).toString())
+        activity!!.showError(resources?.getString(R.string.error_update).toString())
         // Go in Nickname activity
-        (activity as GameActivity).goNicknameActivity()
+        activity!!.goNicknameActivity()
     }
 
-    override fun onGetMatchSuccess(match: Match, by: String) {}
-    override fun onGetMatchFailure(by: String) {}
+    /**
+     * This callback is called when match is retrieved from db,
+     * @param match updated match
+     * @param by code to get calling function
+     * - Update local match,
+     */
+    override fun onGetMatchSuccess(match: Match, by: String) {
+        activity!!.updateLocalMatch(match)
+    }
+
+    /**
+     * This callback is called when error occurred in db,
+     * - Show error and go to Nickname activity
+     */
+    override fun onGetMatchFailure(by: String) {
+        // Show error to user
+        activity!!.showError(resources?.getString(R.string.error_match_cancelled).toString())
+        // Go in Nickname activity
+        activity!!.goNicknameActivity()
+    }
+
     override fun onUpdateMatchSuccess(by: String) {}
 
     /**
@@ -66,9 +90,9 @@ open class GameDbCommunicator(activity: GameActivity) : DbCommunicator() {
      */
     override fun onUpdateMatchFailure() {
         // Show error to user
-        (activity as GameActivity).showError(resources?.getString(R.string.error_update).toString())
+        activity!!.showError(resources?.getString(R.string.error_update).toString())
         // Go in Nickname activity
-        (activity as GameActivity).goNicknameActivity()
+        activity!!.goNicknameActivity()
     }
 
     /**
@@ -79,12 +103,12 @@ open class GameDbCommunicator(activity: GameActivity) : DbCommunicator() {
      */
     override fun onMatchListenerEvent(match: Match, by: String) {
         // Update choices
-        (activity as GameActivity).plotPlayersChoices(match)
+        activity!!.plotPlayersChoices(match)
         // Check winner
         if (winnerListener!! && match.winner != "") {
             disableWinnerListener()
             // Update elected winner
-            (activity as GameActivity).winnerElected(match)
+            activity!!.winnerElected(match)
         }
     }
 
@@ -108,16 +132,16 @@ open class GameDbCommunicator(activity: GameActivity) : DbCommunicator() {
      */
     override fun onMatchListenerFailure() {
         // Show error to user
-        (activity as GameActivity).showError(resources?.getString(R.string.error_getting_data).toString())
+        activity!!.showError(resources?.getString(R.string.error_getting_data).toString())
         // Go in Nickname activity
-        (activity as GameActivity).goNicknameActivity()
+        activity!!.goNicknameActivity()
     }
 
     override fun onMatchDeleted() {
         // Show error to user
-        (activity as GameActivity).showError(resources?.getString(R.string.error_getting_data).toString())
+        activity!!.showError(resources?.getString(R.string.error_getting_data).toString())
         //Update user
-        (activity as GameActivity).clearUserMatch()
+        activity!!.clearUserMatch()
     }
 
     override fun onDeleteMatchSuccess() {}

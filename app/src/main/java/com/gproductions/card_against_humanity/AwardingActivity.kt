@@ -60,7 +60,6 @@ class AwardingActivity : AppCompatActivity() {
 
         // Getting user and match
         user = bundle?.getSerializable("b_user") as User?
-        match = bundle?.getSerializable("b_match") as Match?
 
         // Checking for user in bundle
         if (user == null) {
@@ -74,7 +73,7 @@ class AwardingActivity : AppCompatActivity() {
         }
 
         // Checking for match in bundle
-        if (match == null) {
+        if (user!!.matchName == "nil") {
             // If no match in bundle
             Log.d(resources.getString(R.string.DEBUG_AWARDING), "There is no match in bundle.")
             // Show error to user
@@ -82,6 +81,35 @@ class AwardingActivity : AppCompatActivity() {
             // Going to match activity
             goNicknameActivity()
         }
+    }
+
+    /**
+     * This function is called after activity is created,
+     */
+    override fun onStart() {
+        super.onStart()
+        // Get match in db
+        comm!!.getMatchInDB(user!!.matchName)
+    }
+
+    /**
+     * This function is used to save app state,
+     * @param outState bundle with data to keep
+     */
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        Log.d(resources.getString(R.string.DEBUG_GAME), "Saving state.")
+        outState.putSerializable("b_user", user)
+        outState.putSerializable("b_match", match)
+    }
+
+    /**
+     * This function is called after getting match in db,
+     * @param dbMatch updated db match
+     */
+    fun updateLocalMatch(dbMatch: Match) {
+        // Update local match
+        match = dbMatch
 
         if (bundle?.getBoolean("end") != null && bundle?.getBoolean("end") as Boolean) {
             // Get if user wins
@@ -139,17 +167,6 @@ class AwardingActivity : AppCompatActivity() {
     }
 
     /**
-     * This function is used to save app state,
-     * @param outState bundle with data to keep
-     */
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        Log.d(resources.getString(R.string.DEBUG_GAME), "Saving state.")
-        outState.putSerializable("b_user", user)
-        outState.putSerializable("b_match", match)
-    }
-
-    /**
      * This function create a thread that wait a certain time before return to Game activity,
      */
     fun waitBeforeReturn() {
@@ -162,7 +179,6 @@ class AwardingActivity : AppCompatActivity() {
 
             // Put data in bundle
             bundle?.putSerializable("b_user", user)
-            bundle?.putSerializable("b_match", match)
 
             // Add bundle stored data
             intent.putExtras(bundle as Bundle)
@@ -208,14 +224,13 @@ class AwardingActivity : AppCompatActivity() {
     /**
      * This function is used to go to Nickname activity,
      */
-    private fun goNicknameActivity() {
+    fun goNicknameActivity() {
         Log.d(resources.getString(R.string.DEBUG_AWARDING), "Starting Nickname activity.")
         // Define intent
         val intent = Intent(this, ChooseNicknameActivity::class.java)
 
         // Put data in bundle
         bundle?.putSerializable("b_user", user)
-        bundle?.putSerializable("b_match", match)
 
         // Add bundle stored data in previous activity
         intent.putExtras(bundle as Bundle)

@@ -29,7 +29,7 @@ open class AwardingDbCommunicator(activity: AwardingActivity) : DbCommunicator()
      */
     override fun onUpdateUserSuccess() {
         // Go back to activity
-        (activity as AwardingActivity).checkUpdatesEnd()
+        activity!!.checkUpdatesEnd()
     }
 
     /**
@@ -38,15 +38,32 @@ open class AwardingDbCommunicator(activity: AwardingActivity) : DbCommunicator()
      */
     override fun onUpdateUserFailure() {
         // Show error to user
-        (activity as AwardingActivity).showError(resources!!.getString(R.string.error_ending))
+        activity!!.showError(resources!!.getString(R.string.error_ending))
         // Go back to activity
-        (activity as AwardingActivity).checkUpdatesEnd()
+        activity!!.checkUpdatesEnd()
     }
 
     override fun onSetMatchSuccess() {}
     override fun onSetMatchFailure() {}
-    override fun onGetMatchSuccess(match: Match, by: String) {}
-    override fun onGetMatchFailure(by: String) {}
+
+    /**
+     * This callback is called when match is retrieved from db,
+     * @param match updated match
+     * @param by code to get calling function
+     * - Update local match,
+     */
+    override fun onGetMatchSuccess(match: Match, by: String) {
+        activity!!.updateLocalMatch(match)
+    }
+
+    /**
+     * This callback is called when error occurred in db,
+     * - Show error and go to Nickname activity
+     */
+    override fun onGetMatchFailure(by: String) {
+        // Go in Nickname activity
+        activity!!.goNicknameActivity()
+    }
 
     /**
      * This callback is called when match is updated successfully,
@@ -54,7 +71,7 @@ open class AwardingDbCommunicator(activity: AwardingActivity) : DbCommunicator()
      */
     override fun onUpdateMatchSuccess(by: String) {
         // Go back to activity
-        (activity as AwardingActivity).checkUpdatesEnd()
+        activity!!.checkUpdatesEnd()
     }
 
     /**
@@ -63,9 +80,9 @@ open class AwardingDbCommunicator(activity: AwardingActivity) : DbCommunicator()
      */
     override fun onUpdateMatchFailure() {
         // Show error to user
-        (activity as AwardingActivity).showError(resources!!.getString(R.string.error_ending))
+        activity!!.showError(resources!!.getString(R.string.error_ending))
         // Go back to activity
-        (activity as AwardingActivity).checkUpdatesEnd()
+        activity!!.checkUpdatesEnd()
     }
 
     /**
@@ -90,8 +107,8 @@ open class AwardingDbCommunicator(activity: AwardingActivity) : DbCommunicator()
      */
     override fun onMatchListenerFailure() {
         // Show error to user
-        (activity as AwardingActivity).showError(resources!!.getString(R.string.error_deleting))
-        (activity as AwardingActivity).waitBeforeReturn()
+        activity!!.showError(resources!!.getString(R.string.error_deleting))
+        activity!!.waitBeforeReturn()
     }
 
     override fun onMatchDeleted() {}
@@ -102,7 +119,7 @@ open class AwardingDbCommunicator(activity: AwardingActivity) : DbCommunicator()
      */
     override fun onDeleteMatchSuccess() {
         // If match deleted return
-        (activity as AwardingActivity).waitBeforeReturn()
+        activity!!.waitBeforeReturn()
     }
 
     /**
@@ -111,7 +128,7 @@ open class AwardingDbCommunicator(activity: AwardingActivity) : DbCommunicator()
      */
     override fun onDeleteMatchFailure() {
         // Show error to user
-        (activity as AwardingActivity).showError(resources!!.getString(R.string.error_deleting))
-        (activity as AwardingActivity).waitBeforeReturn()
+        activity!!.showError(resources!!.getString(R.string.error_deleting))
+        activity!!.waitBeforeReturn()
     }
 }

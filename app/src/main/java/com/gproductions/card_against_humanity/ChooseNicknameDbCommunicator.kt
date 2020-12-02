@@ -21,10 +21,10 @@ open class ChooseNicknameDbCommunicator(activity: ChooseNicknameActivity) : DbCo
      * @param used flag value to set in activity
      */
     override fun onCheckUsedNicknameSuccess(used: Boolean) {
-        (activity as ChooseNicknameActivity).setNicknameUsed(used)
+        activity!!.setNicknameUsed(used)
         if (used)
         // Show error to user
-            (activity as ChooseNicknameActivity).showError(
+            activity!!.showError(
                 resources?.getString(R.string.error_used_nickname).toString()
             )
 
@@ -38,9 +38,9 @@ open class ChooseNicknameDbCommunicator(activity: ChooseNicknameActivity) : DbCo
      */
     override fun onSetUserSuccess() {
         // Disabling eventually enabled progress bar
-        (activity as ChooseNicknameActivity).hideProgressBar()
+        activity!!.hideProgressBar()
         // Going to next activity
-        (activity as ChooseNicknameActivity).goChooseMatchesActivity()
+        activity!!.goChooseMatchesActivity()
     }
 
     /**
@@ -49,9 +49,9 @@ open class ChooseNicknameDbCommunicator(activity: ChooseNicknameActivity) : DbCo
      */
     override fun onSetUserFailure() {
         // Disabling eventually enabled progress bar
-        (activity as ChooseNicknameActivity).hideProgressBar()
+        activity!!.hideProgressBar()
         // Show error to user
-        (activity as ChooseNicknameActivity).showError(
+        activity!!.showError(
             resources?.getString(R.string.error_updating_nickname).toString()
         )
     }
@@ -62,7 +62,7 @@ open class ChooseNicknameDbCommunicator(activity: ChooseNicknameActivity) : DbCo
      */
     override fun onGetUserSuccess(user: User) {
         // Updating user in game
-        (activity as ChooseNicknameActivity).updateUser(user)
+        activity!!.updateUser(user)
     }
 
     override fun onGetUserFailure() {}

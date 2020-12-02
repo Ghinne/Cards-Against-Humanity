@@ -35,18 +35,18 @@ open class SignInDbCommunicator(activity: SignInActivity) : DbCommunicator() {
         auth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener {
                 // Disable progress bar
-                (activity as SignInActivity).hideProgressBar()
+                activity!!.hideProgressBar()
                 Log.d(tag, "User logged in (email).")
-                (activity as SignInActivity).goChooseNicknameActivity()
+                activity!!.goChooseNicknameActivity()
             }
             .addOnFailureListener { e ->
                 // Disable progress bar
-                (activity as SignInActivity).hideProgressBar()
+                activity!!.hideProgressBar()
                 // Sign in failed
                 Log.d(tag, "User not logged in (email). ${e.message}")
                 if (e.message.equals("The password is invalid or the user does not have a password.")) {
                     // Show error to user
-                    (activity as SignInActivity).showError(
+                    activity!!.showError(
                         resources?.getString(R.string.wrong_password).toString()
                     )
                 } else {
@@ -54,24 +54,24 @@ open class SignInDbCommunicator(activity: SignInActivity) : DbCommunicator() {
                     auth.createUserWithEmailAndPassword(email, password)
                         .addOnSuccessListener {
                             // Disable progress bar
-                            (activity as SignInActivity).hideProgressBar()
+                            activity!!.hideProgressBar()
                             // Sign in success
                             Log.d(tag, "User authenticated (email).")
-                            (activity as SignInActivity).goChooseNicknameActivity()
+                            activity!!.goChooseNicknameActivity()
                         }
                         .addOnFailureListener { e2 ->
                             // Disable progress bar
-                            (activity as SignInActivity).hideProgressBar()
+                            activity!!.hideProgressBar()
                             // User creation failed
                             Log.d(tag, "User NOT created (email). $e2")
                             if (e.equals("email-already-in-use")) {
                                 // Show error to user
-                                (activity as SignInActivity).showError(
+                                activity!!.showError(
                                     resources?.getString(R.string.used_email).toString()
                                 )
                             } else {
                                 // Show error to user
-                                (activity as SignInActivity).showError(
+                                activity!!.showError(
                                     resources?.getString(R.string.error_authentication).toString()
                                 )
                             }
@@ -95,15 +95,15 @@ open class SignInDbCommunicator(activity: SignInActivity) : DbCommunicator() {
             .addOnSuccessListener {
                 // Sign in success
                 Log.d(tag, "User authenticated (idToken).")
-                (activity as SignInActivity).goChooseNicknameActivity()
+                activity!!.goChooseNicknameActivity()
             }
             .addOnFailureListener { e ->
                 // Disable progress bar
-                (activity as SignInActivity).hideProgressBar()
+                activity!!.hideProgressBar()
                 // Sign in failed
                 Log.d(tag, "User NOT authenticated (idToken). $e")
                 // Show error to user
-                (activity as SignInActivity).showError(resources?.getString(R.string.error_authentication) + "Auth with token.")
+                activity!!.showError(resources?.getString(R.string.error_authentication) + "Auth with token.")
             }
     }
 
