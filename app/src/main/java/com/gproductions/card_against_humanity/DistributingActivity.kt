@@ -20,6 +20,7 @@ class DistributingActivity : AppCompatActivity() {
     // Variables
     private var user: User? = null
     private var match: Match? = null
+
     // DEALER
     private var usersCardsNeeded: HashMap<String, Int> = HashMap()
     private var blackChosen = false
@@ -58,7 +59,7 @@ class DistributingActivity : AppCompatActivity() {
         }
 
         // Getting user and match
-        user = bundle?.getSerializable("b_user") as User?
+        user = bundle!!.getSerializable("b_user") as User?
 
         // Checking for user in bundle
         if (user == null) {
@@ -106,8 +107,10 @@ class DistributingActivity : AppCompatActivity() {
      * @param dbMatch updated db match
      */
     fun updateLocalMatch(dbMatch: Match) {
-        Log.d(resources.getString(R.string.DEBUG_DISTRIBUTING),
-            "Updating local match and start distributing.")
+        Log.d(
+            resources.getString(R.string.DEBUG_DISTRIBUTING),
+            "Updating local match and start distributing."
+        )
         // Update local match
         match = dbMatch
 
@@ -190,27 +193,31 @@ class DistributingActivity : AppCompatActivity() {
 
         for (player in match!!.players) {
             GlobalScope.launch {
-                Log.d(resources.getString(R.string.DEBUG_DISTRIBUTING), "Giving cards to $player. ${Thread.currentThread()}")
+                Log.d(
+                    resources.getString(R.string.DEBUG_DISTRIBUTING),
+                    "Giving cards to $player. ${Thread.currentThread()}"
+                )
                 // Getting player cards
                 if (match!!.playersCards[player] == null)
                     usersCardsNeeded[player] =
                         resources.getInteger(R.integer.WHITE_CARDS_PER_PLAYER)
                 else
                     usersCardsNeeded[player] =
-                        resources.getInteger(R.integer.WHITE_CARDS_PER_PLAYER) - match!!.playersCards[player]?.size as Int
+                        resources.getInteger(R.integer.WHITE_CARDS_PER_PLAYER) - match!!.playersCards[player]!!.size
 
                 // If user has not enough cards give him necessary amount
                 if (usersCardsNeeded[player]!! > 0) {
                     synchronized(this) {
-                    if (match!!.whiteCards.size < usersCardsNeeded[player] as Int) {
-                        // If not enough cards in set, clear db cards and reshuffle the set
-                        comm!!.updateMatchInDB(
-                            match!!.name as String,
-                            hashMapOf("whiteCards" to ArrayList<Int>()),
-                            "cards"
-                        )
-                        return@launch
-                    }}
+                        if (match!!.whiteCards.size < usersCardsNeeded[player] as Int) {
+                            // If not enough cards in set, clear db cards and reshuffle the set
+                            comm!!.updateMatchInDB(
+                                match!!.name as String,
+                                hashMapOf("whiteCards" to ArrayList<Int>()),
+                                "cards"
+                            )
+                            return@launch
+                        }
+                    }
                     // Getting cards to add
                     for (i in 1..(usersCardsNeeded[player] as Int)) {
                         var card: Int?
@@ -265,7 +272,7 @@ class DistributingActivity : AppCompatActivity() {
         Log.d(resources.getString(R.string.DEBUG_DISTRIBUTING), "Setting player $uid cards.")
 
         // Updating user cards
-        match!!.playersCards[uid]?.add(card)
+        match!!.playersCards[uid]!!.add(card)
         // Decrease amount of cards needed by user
         usersCardsNeeded[uid] = (usersCardsNeeded[uid] as Int) - 1
 
@@ -324,7 +331,7 @@ class DistributingActivity : AppCompatActivity() {
         // Define intent
         val intent = Intent(this, ChooseNicknameActivity::class.java)
         // Put data in bundle
-        bundle?.putSerializable("b_user", user)
+        bundle!!.putSerializable("b_user", user)
 
         // Add bundle stored data in previous activity
         intent.putExtras(bundle as Bundle)
@@ -358,7 +365,7 @@ class DistributingActivity : AppCompatActivity() {
         val intent = Intent(this, ShufflingActivity::class.java)
 
         // Put data in bundle
-        bundle?.putSerializable("b_user", user)
+        bundle!!.putSerializable("b_user", user)
 
         // Add bundle stored data in next activity
         intent.putExtras(bundle as Bundle)

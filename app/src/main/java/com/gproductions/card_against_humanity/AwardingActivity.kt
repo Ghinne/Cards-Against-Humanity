@@ -59,7 +59,7 @@ class AwardingActivity : AppCompatActivity() {
         }
 
         // Getting user and match
-        user = bundle?.getSerializable("b_user") as User?
+        user = bundle!!.getSerializable("b_user") as User?
 
         // Checking for user in bundle
         if (user == null) {
@@ -140,7 +140,9 @@ class AwardingActivity : AppCompatActivity() {
                 hashMapOf(
                     "matchPlayed" to user!!.matchPlayed,
                     "points" to user!!.points,
-                    "matchName" to user!!.matchName))
+                    "matchName" to user!!.matchName
+                )
+            )
 
             if (match!!.dealer == user!!.uid) {
                 // Add listener to delete match in DB
@@ -149,7 +151,8 @@ class AwardingActivity : AppCompatActivity() {
                 // Remove player from match in DB
                 comm!!.updateMatchInDB(
                     match!!.name as String,
-                    hashMapOf("players" to FieldValue.arrayRemove(user!!.uid as String)))
+                    hashMapOf("players" to FieldValue.arrayRemove(user!!.uid as String))
+                )
             }
         } else {
             if (match!!.winner == user!!.uid) {
@@ -178,7 +181,7 @@ class AwardingActivity : AppCompatActivity() {
             val intent = Intent()
 
             // Put data in bundle
-            bundle?.putSerializable("b_user", user)
+            bundle!!.putSerializable("b_user", user)
 
             // Add bundle stored data
             intent.putExtras(bundle as Bundle)
@@ -194,7 +197,7 @@ class AwardingActivity : AppCompatActivity() {
      * @return player match points
      */
     private fun amIWinner(): Double {
-        return if (match!!.playersPoints[user!!.uid as String]!! >= match!!.playersPoints.values.max()!!)
+        return if (match!!.playersPoints[user!!.uid as String]!! >= match!!.playersPoints.values.maxOrNull()!!)
             1 / (match!!.playersPoints.values.count { it == match!!.playersPoints[user!!.uid as String]!! }).toDouble()
         else
             .0
@@ -230,7 +233,7 @@ class AwardingActivity : AppCompatActivity() {
         val intent = Intent(this, ChooseNicknameActivity::class.java)
 
         // Put data in bundle
-        bundle?.putSerializable("b_user", user)
+        bundle!!.putSerializable("b_user", user)
 
         // Add bundle stored data in previous activity
         intent.putExtras(bundle as Bundle)

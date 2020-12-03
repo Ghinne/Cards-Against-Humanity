@@ -87,7 +87,7 @@ class ChooseMatchActivity : AppCompatActivity(), View.OnClickListener {
         // Initialize rounds
         rounds = resources.getInteger(R.integer.MIN_ROUNDS_COUNT)
         printRounds()
-        
+
         // Check for active matches
         comm!!.getMatchInDB(user!!.matchName, "check")
 
@@ -224,10 +224,11 @@ class ChooseMatchActivity : AppCompatActivity(), View.OnClickListener {
      * - Il caller function is join update match in db adding user in players,
      */
     fun afterPlayerRemove(by: String) {
-        when(by) {
+        when (by) {
             "create" -> {
                 // Update or create match in db
-                comm!!.setMatchInDB(match as Match)}
+                comm!!.setMatchInDB(match as Match)
+            }
             "join" -> {
                 // Add player to db
                 comm!!.updateMatchInDB(
@@ -244,7 +245,8 @@ class ChooseMatchActivity : AppCompatActivity(), View.OnClickListener {
      */
     fun playerAddedInMatch() {
         // Update user in db
-        comm!!.updateUserInDB(user!!.uid as String,
+        comm!!.updateUserInDB(
+            user!!.uid as String,
             hashMapOf(
                 "matchName" to match!!.name as String
             )
@@ -435,7 +437,7 @@ class ChooseMatchActivity : AppCompatActivity(), View.OnClickListener {
         val intent = Intent(this, WaitPlayers::class.java)
 
         // Put data in bundle
-        bundle?.putSerializable("b_user", user)
+        bundle!!.putSerializable("b_user", user)
 
         // Add bundle stored data
         intent.putExtras(bundle as Bundle)

@@ -65,7 +65,8 @@ open class DistributingDbCommunicator(activity: DistributingActivity) : DbCommun
             .get()
             .addOnSuccessListener { doc ->
                 if (doc != null && doc.exists()) {
-                    Log.d(tag, "Black card retrieved."
+                    Log.d(
+                        tag, "Black card retrieved."
                     )
                     // Set black card in match
                     activity!!.setBlackCard(doc.toObject(BlackCard::class.java) as BlackCard)
@@ -123,7 +124,7 @@ open class DistributingDbCommunicator(activity: DistributingActivity) : DbCommun
      */
     override fun onGetMatchFailure(by: String) {
         // Show error to user
-        activity!!.showError(resources?.getString(R.string.error_match_cancelled).toString())
+        activity!!.showError(resources!!.getString(R.string.error_match_cancelled))
         // Go in Nickname activity
         activity!!.goNicknameActivity()
     }
@@ -133,9 +134,10 @@ open class DistributingDbCommunicator(activity: DistributingActivity) : DbCommun
      * @param by code to get calling function
      */
     override fun onUpdateMatchSuccess(by: String) {
-        when(by){
+        when (by) {
             "cards" -> {// Adding new cards to empty cards set
-                        activity!!.goShuffleActivity()}
+                activity!!.goShuffleActivity()
+            }
         }
     }
 
@@ -158,10 +160,11 @@ open class DistributingDbCommunicator(activity: DistributingActivity) : DbCommun
      * - If caller is dealer and all player in distributing remove listener for players and distribute cards,
      */
     override fun onMatchListenerEvent(match: Match, by: String) {
-        when(by) {
+        when (by) {
             "player" -> {
-                if(match.distributing.isEmpty()) {
-                    Log.d(tag, "Cards distributed going to next activity."
+                if (match.distributing.isEmpty()) {
+                    Log.d(
+                        tag, "Cards distributed going to next activity."
                     )
                     // Disable listener
                     removeMatchListener()
@@ -171,7 +174,7 @@ open class DistributingDbCommunicator(activity: DistributingActivity) : DbCommun
                 }
             }
             "dealer" -> {
-                if (match.distributing.containsAll(match.players))                 {
+                if (match.distributing.containsAll(match.players)) {
                     Log.d(tag, "All users in distributing, launch distributing.")
                     Log.d(tag, "DEALER $match ${auth.uid}")
 

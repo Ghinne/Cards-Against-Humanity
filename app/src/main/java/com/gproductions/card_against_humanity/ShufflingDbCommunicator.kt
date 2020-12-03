@@ -135,7 +135,7 @@ open class ShufflingDbCommunicator(activity: ShufflingActivity) : DbCommunicator
      */
     override fun onGetMatchFailure(by: String) {
         // Show error to user
-        activity!!.showError(resources?.getString(R.string.error_match_cancelled).toString())
+        activity!!.showError(resources!!.getString(R.string.error_match_cancelled))
         // Go in Nickname activity
         activity!!.goNicknameActivity()
     }

@@ -24,9 +24,7 @@ open class ChooseNicknameDbCommunicator(activity: ChooseNicknameActivity) : DbCo
         activity!!.setNicknameUsed(used)
         if (used)
         // Show error to user
-            activity!!.showError(
-                resources?.getString(R.string.error_used_nickname).toString()
-            )
+            activity!!.showError(resources!!.getString(R.string.error_used_nickname))
 
     }
 
@@ -51,9 +49,7 @@ open class ChooseNicknameDbCommunicator(activity: ChooseNicknameActivity) : DbCo
         // Disabling eventually enabled progress bar
         activity!!.hideProgressBar()
         // Show error to user
-        activity!!.showError(
-            resources?.getString(R.string.error_updating_nickname).toString()
-        )
+        activity!!.showError(resources!!.getString(R.string.error_updating_nickname))
     }
 
     /**

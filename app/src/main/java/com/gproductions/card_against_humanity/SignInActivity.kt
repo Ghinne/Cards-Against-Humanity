@@ -55,7 +55,7 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener {
         // Initialize communicator
         comm = SignInDbCommunicator(this)
         // Get authentication
-        auth = comm?.getAuthentication()
+        auth = comm!!.getAuthentication()
 
         // Define Google sign in options
         val options: GoogleSignInOptions =
@@ -96,7 +96,7 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener {
         super.onStart()
         Log.d(resources.getString(R.string.DEBUG_SIGN_IN), "Activity started.")
         // Getting user authentication
-        val currentUser = auth?.currentUser
+        val currentUser = auth!!.currentUser
         // Check if user is authenticated.
         if (currentUser != null)
             goChooseNicknameActivity()
@@ -118,7 +118,7 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener {
 
         // Checking email validity
         if (!email.isEmailValid()) {
-            Log.d(resources.getString(R.string.DEBUG_SIGN_IN), "Invaid email.")
+            Log.d(resources.getString(R.string.DEBUG_SIGN_IN), "Invalid email.")
             // Show error to user
             showError(resources.getString(R.string.invalid_email))
             return
@@ -133,7 +133,7 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener {
         // Enable progress bar
         showProgressBar()
         // Authenticate user on Firebase db
-        comm?.authWithEmailInDB(email, password)
+        comm!!.authWithEmailInDB(email, password)
     }
 
     /**
@@ -152,7 +152,7 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener {
         Log.d(resources.getString(R.string.DEBUG_SIGN_IN), "Authentication started (Google).")
 
         // Create a google sign in Intent
-        val intent: Intent? = signInClient?.signInIntent
+        val intent: Intent? = signInClient!!.signInIntent
         // Run google sign in activity waiting for results
         startActivityForResult(intent, rcSignInGoogle)
     }
@@ -226,7 +226,7 @@ class SignInActivity : AppCompatActivity(), View.OnClickListener {
                         // Google Sign In was successful
                         val account = task.result!!
                         // Authenticate on firebase DB
-                        comm?.authWithIdTokenInDB(account.idToken!!)
+                        comm!!.authWithIdTokenInDB(account.idToken!!)
                     } catch (e: ApiException) {
                         // Disable progress bar
                         hideProgressBar()

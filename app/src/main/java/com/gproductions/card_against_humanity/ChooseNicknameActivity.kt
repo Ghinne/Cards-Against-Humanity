@@ -41,7 +41,7 @@ open class ChooseNicknameActivity : AppCompatActivity(), View.OnClickListener {
         // Initialize communicator
         comm = ChooseNicknameDbCommunicator(this)
         // Get authentication
-        auth = comm?.getAuthentication()
+        auth = comm!!.getAuthentication()
 
         // If user not authenticated or authentication error
         if (auth == null) {
@@ -73,7 +73,7 @@ open class ChooseNicknameActivity : AppCompatActivity(), View.OnClickListener {
         addNicknameListener(etNickname)
 
         // Check for user data in db
-        comm?.getUserInDB(auth?.uid as String)
+        comm!!.getUserInDB(auth!!.uid as String)
     }
 
     /**
@@ -121,7 +121,10 @@ open class ChooseNicknameActivity : AppCompatActivity(), View.OnClickListener {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable) {
-                Log.d(resources.getString(R.string.DEBUG_NICKNAME), "ChooseNicknameActivity text changed.")
+                Log.d(
+                    resources.getString(R.string.DEBUG_NICKNAME),
+                    "ChooseNicknameActivity text changed."
+                )
                 // If username is changed check if it's feasible
                 enableSubmitIfReady(etU.text.toString().trim { it <= ' ' })
             }
@@ -140,7 +143,7 @@ open class ChooseNicknameActivity : AppCompatActivity(), View.OnClickListener {
             return
 
         // Check if other users use same nickname
-        comm?.checkUsedNicknameInDB(nickname)
+        comm!!.checkUsedNicknameInDB(nickname)
     }
 
     /**
@@ -202,7 +205,10 @@ open class ChooseNicknameActivity : AppCompatActivity(), View.OnClickListener {
      * - If user is already in db update it's nickname, otherwise create a new user in db,
      */
     private fun updateNickname() {
-        Log.d(resources.getString(R.string.DEBUG_NICKNAME), "ChooseNicknameActivity button pressed.")
+        Log.d(
+            resources.getString(R.string.DEBUG_NICKNAME),
+            "ChooseNicknameActivity button pressed."
+        )
         // Get nickname
         val etNickname: TextView = findViewById(R.id.et_nickname)
 
@@ -229,16 +235,16 @@ open class ChooseNicknameActivity : AppCompatActivity(), View.OnClickListener {
                 user!!.nickname = nickname
         } else
         // If user is new create a new one
-            user = User(nickname, auth?.uid)
+            user = User(nickname, auth!!.uid)
 
         // Enabling progress bar
         showProgressBar()
 
         // Update bundle
-        bundle?.putSerializable("b_user", user)
+        bundle!!.putSerializable("b_user", user)
 
         // Update user in db
-        comm?.setUserInDB(user!!)
+        comm!!.setUserInDB(user!!)
     }
 
     /**
@@ -259,7 +265,7 @@ open class ChooseNicknameActivity : AppCompatActivity(), View.OnClickListener {
     private fun goSignInActivity() {
         Log.d(resources.getString(R.string.DEBUG_NICKNAME), "Logging out.")
         // Logout
-        auth?.signOut()
+        auth!!.signOut()
         // Go to SignInActivity activity
         startActivity(Intent(applicationContext, SignInActivity::class.java))
         // End actual activity
@@ -274,7 +280,7 @@ open class ChooseNicknameActivity : AppCompatActivity(), View.OnClickListener {
         // Create an intent
         val intent = Intent(applicationContext, ChooseMatchActivity::class.java)
         // Update bundle
-        bundle?.putSerializable("b_user", user)
+        bundle!!.putSerializable("b_user", user)
 
         // Add bundle stored data
         intent.putExtras(bundle as Bundle)

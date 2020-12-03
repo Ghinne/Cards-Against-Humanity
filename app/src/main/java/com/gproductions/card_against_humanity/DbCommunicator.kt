@@ -191,7 +191,7 @@ abstract class DbCommunicator {
      * - Query db for match with matchName passed as parameter data,
      * - Call appropriate callback based on results,
      */
-    fun getMatchInDB(matchName: String, by: String="") {
+    fun getMatchInDB(matchName: String, by: String = "") {
         Log.d(tag, "Getting match in db.")
         // Getting user cards
         db.collection("matches")
@@ -213,8 +213,8 @@ abstract class DbCommunicator {
             }
     }
 
-    abstract fun onGetMatchSuccess(match: Match, by: String="")
-    abstract fun onGetMatchFailure(by: String="")
+    abstract fun onGetMatchSuccess(match: Match, by: String = "")
+    abstract fun onGetMatchFailure(by: String = "")
 
     /**
      * This function is used to update match in db,
@@ -302,7 +302,7 @@ abstract class DbCommunicator {
                 Log.d(tag, "Match deleted from DB.")
                 onDeleteMatchSuccess()
             }
-            .addOnFailureListener {e ->
+            .addOnFailureListener { e ->
                 Log.d(tag, "Error deleting match from DB. $e")
                 onDeleteMatchFailure()
             }

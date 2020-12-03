@@ -52,7 +52,7 @@ class ShufflingActivity : AppCompatActivity() {
         }
 
         // Getting user and match
-        user = bundle?.getSerializable("b_user") as User?
+        user = bundle!!.getSerializable("b_user") as User?
 
         // Checking for user in bundle
         if (user == null) {
@@ -201,7 +201,7 @@ class ShufflingActivity : AppCompatActivity() {
         // Define intent
         val intent = Intent(this, ChooseNicknameActivity::class.java)
         // Put data in bundle
-        bundle?.putSerializable("b_user", user)
+        bundle!!.putSerializable("b_user", user)
 
         // Add bundle stored data in previous activity
         intent.putExtras(bundle as Bundle)
@@ -220,7 +220,7 @@ class ShufflingActivity : AppCompatActivity() {
         val intent = Intent()
 
         // Put data in bundle
-        bundle?.putSerializable("b_user", user)
+        bundle!!.putSerializable("b_user", user)
 
         // Add bundle stored data in next activity
         intent.putExtras(bundle as Bundle)

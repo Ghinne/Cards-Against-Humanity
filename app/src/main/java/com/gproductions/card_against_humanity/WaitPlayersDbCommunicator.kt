@@ -45,7 +45,9 @@ open class WaitPlayersDbCommunicator(activity: WaitPlayers) : DbCommunicator() {
                 .addOnFailureListener { e ->
                     Log.d(tag, "Error deleting match. $e")
                     // Show error to user
-                    activity!!.showError(resources?.getString(R.string.error_removing_match).toString())
+                    activity!!.showError(
+                        resources!!.getString(R.string.error_removing_match)
+                    )
                     // Going to Choose nickname activity
                     activity!!.goNicknameActivity()
                 }
@@ -64,7 +66,9 @@ open class WaitPlayersDbCommunicator(activity: WaitPlayers) : DbCommunicator() {
                             .addOnFailureListener { e ->
                                 Log.d(tag, "Error deleting user from match in db. $e")
                                 // Show error to user
-                                activity!!.showError(resources?.getString(R.string.error_removing_match).toString())
+                                activity!!.showError(
+                                    resources!!.getString(R.string.error_removing_match)
+                                )
                                 // Going to Choose nickname activity
                                 activity!!.goNicknameActivity()
                             }
@@ -75,7 +79,9 @@ open class WaitPlayersDbCommunicator(activity: WaitPlayers) : DbCommunicator() {
                 .addOnFailureListener { e ->
                     Log.w(tag, "Error getting match from which delete user. $e")
                     // Show error to user
-                    activity!!.showError(resources?.getString(R.string.error_removing_match).toString())
+                    activity!!.showError(
+                        resources!!.getString(R.string.error_removing_match)
+                    )
                     // Going to Choose nickname activity
                     activity!!.goNicknameActivity()
                 }
@@ -104,7 +110,7 @@ open class WaitPlayersDbCommunicator(activity: WaitPlayers) : DbCommunicator() {
      */
     override fun onUpdateUserFailure() {
         // Show error to user
-        activity!!.showError(resources?.getString(R.string.error_update).toString())
+        activity!!.showError(resources!!.getString(R.string.error_update))
         // Go Nickname activity
         activity!!.goNicknameActivity()
     }
@@ -128,7 +134,7 @@ open class WaitPlayersDbCommunicator(activity: WaitPlayers) : DbCommunicator() {
      */
     override fun onGetMatchFailure(by: String) {
         // Show error to user
-        activity!!.showError(resources?.getString(R.string.error_match_cancelled).toString())
+        activity!!.showError(resources!!.getString(R.string.error_match_cancelled))
         // Go in Nickname activity
         activity!!.goNicknameActivity()
     }
@@ -150,7 +156,7 @@ open class WaitPlayersDbCommunicator(activity: WaitPlayers) : DbCommunicator() {
      */
     override fun onMatchListenerFailure() {
         // Show error to user
-        activity!!.showError(resources?.getString(R.string.error_match_cancelled).toString())
+        activity!!.showError(resources!!.getString(R.string.error_match_cancelled))
         // Go in Nickname activity
         activity!!.goNicknameActivity()
     }
@@ -175,6 +181,6 @@ open class WaitPlayersDbCommunicator(activity: WaitPlayers) : DbCommunicator() {
      */
     override fun onUpdateMatchFailure() {
         // Show error to user
-        activity!!.showError(resources?.getString(R.string.error_activating_match).toString())
+        activity!!.showError(resources!!.getString(R.string.error_activating_match))
     }
 }

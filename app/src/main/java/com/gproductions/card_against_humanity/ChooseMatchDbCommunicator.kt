@@ -46,7 +46,7 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
                 // Disable match create button
                 activity!!.disableCreate()
                 // Show error to user
-                activity!!.showError(resources?.getString(R.string.already_used_name).toString())
+                activity!!.showError(resources!!.getString(R.string.already_used_name))
             } else {
                 // Match name not used
                 Log.d(tag, "Match name feasible.")
@@ -86,7 +86,7 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
 
                 // If match is running and player count is less than minimum required delete the match,
                 if ((dbMatch.active == true &&
-                            dbMatch.players.size < resources?.getInteger(R.integer.MIN_PLAYERS) as Int) ||
+                            dbMatch.players.size < resources!!.getInteger(R.integer.MIN_PLAYERS)) ||
                     (dbMatch.active == false &&
                             dbMatch.dealer == user.uid)
                 ) {
@@ -101,7 +101,7 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
                         .addOnFailureListener { e ->
                             Log.d(tag, "Error deleting match. $e")
                             // Show error to user
-                            activity!!.showError(resources?.getString(R.string.error_update) + "Full match.")
+                            activity!!.showError(resources!!.getString(R.string.error_update) + "Full match.")
                         }
                 } else {
                     // Otherwise delete only user from players list
@@ -117,7 +117,7 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
                             .addOnFailureListener { e ->
                                 Log.d(tag, "Error updating dealer. $e")
                                 // Show error to user
-                                activity!!.showError(resources?.getString(R.string.error_update) + "Setting new dealer.")
+                                activity!!.showError(resources!!.getString(R.string.error_update) + "Setting new dealer.")
                             }
                     }
 
@@ -132,7 +132,7 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
                         .addOnFailureListener { e ->
                             Log.e(tag, "Error deleting user from match in db. $e")
                             // Show error to user
-                            activity!!.showError(resources?.getString(R.string.error_update) + "Player.")
+                            activity!!.showError(resources!!.getString(R.string.error_update) + "Player.")
                         }
                 }
             } else {
@@ -158,7 +158,8 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
      * - On changing event add new match to ready match scroll view,
      */
     fun addReadyMatchesListenerInDB(uid: String, language: String) {
-        Log.d(tag, "Adding listener on match changing event."
+        Log.d(
+            tag, "Adding listener on match changing event."
         )
         // Get db table
         val dRef = db.collection("matches")
@@ -184,7 +185,7 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
                     val match: Match = snap.toObject(Match::class.java)
 
                     // Check players count
-                    if (match.players.size >= resources?.getInteger(R.integer.MAX_PLAYERS) as Int)
+                    if (match.players.size >= resources!!.getInteger(R.integer.MAX_PLAYERS))
                         continue
 
                     // Check if user is match dealer
@@ -222,7 +223,7 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
      */
     override fun onSetMatchFailure() {
         // Show error to user
-        activity!!.showError(resources?.getString(R.string.error_update).toString())
+        activity!!.showError(resources!!.getString(R.string.error_update))
         // Go nickname activity
         activity!!.goNicknameActivity()
     }
@@ -233,26 +234,29 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
      */
     override fun onGetMatchSuccess(match: Match, by: String) {
         when (by) {
-            "resume"-> {
-                    // Update active match to resume
-                    activity!!.updateMatchToResume(match)}
+            "resume" -> {
+                // Update active match to resume
+                activity!!.updateMatchToResume(match)
+            }
             "check" -> {
-                    // Enable resume
-                    activity!!.enableReturn()}
+                // Enable resume
+                activity!!.enableReturn()
+            }
         }
     }
+
     /**
      * This callback is called when error occurred in db,
      * - Show error and go to Nickname activity
      */
     override fun onGetMatchFailure(by: String) {
         when (by) {
-            "resume"-> {
+            "resume" -> {
                 // Show error to user
-                activity!!.showError(resources?.getString(R.string.error_returning).toString())
+                activity!!.showError(resources!!.getString(R.string.error_returning))
                 // Go to Nickname activity
                 //activity!!.goNicknameActivity()
-                }
+            }
         }
     }
 
@@ -271,7 +275,7 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
      */
     override fun onUpdateUserFailure() {
         // Show error to user
-        activity!!.showError(resources?.getString(R.string.error_update).toString())
+        activity!!.showError(resources!!.getString(R.string.error_update))
         // Go Nickname activity
         activity!!.goNicknameActivity()
     }
@@ -291,7 +295,7 @@ open class ChooseMatchDbCommunicator(activity: ChooseMatchActivity) : DbCommunic
      */
     override fun onUpdateMatchFailure() {
         // Show error to user
-        activity!!.showError(resources?.getString(R.string.error_adding_user).toString())
+        activity!!.showError(resources!!.getString(R.string.error_adding_user))
         // Go Nickname activity
         activity!!.goNicknameActivity()
     }

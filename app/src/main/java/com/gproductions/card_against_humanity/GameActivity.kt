@@ -55,7 +55,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         // Getting user and match
-        user = bundle?.getSerializable("b_user") as User?
+        user = bundle!!.getSerializable("b_user") as User?
 
         // Checking for user in bundle
         if (user == null) {
@@ -175,10 +175,14 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             // If player is dealer
             if (match!!.dealer == user!!.uid) {
                 // Add choice listener
-                comm?.addMatchListenerInDB(match!!.name as String)
+                comm!!.addMatchListenerInDB(match!!.name as String)
             } else {
+                // If player has already voted
+                if (match!!.playersChoices.containsKey(user!!.uid))
+                    showPlayersChoices()
+                else
                 // Plot white cards in layout
-                plotWhiteCards()
+                    plotWhiteCards()
             }
         }
     }
@@ -241,10 +245,11 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
             if (match!!.players.indexOf(match!!.dealer as String) + 1 >= match!!.players.size)
                 match!!.dealer = match!!.players[0]
             else
-                match!!.dealer = match!!.players[match!!.players.indexOf(match!!.dealer as String) + 1]
+                match!!.dealer =
+                    match!!.players[match!!.players.indexOf(match!!.dealer as String) + 1]
 
             // Update match
-            comm?.setMatchInDB(match!!)
+            comm!!.setMatchInDB(match!!)
         } else {
             // Player clicked done button
             Log.d(resources.getString(R.string.DEBUG_GAME), "Done button clicked by PLAYER.")
@@ -256,11 +261,12 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                 showError(resources.getString(R.string.not_enough_cards))
             } else {
                 // Remove used cards
-                val updatedCards: ArrayList<WhiteCard> = match!!.playersCards[user!!.uid] as ArrayList<WhiteCard>
+                val updatedCards: ArrayList<WhiteCard> =
+                    match!!.playersCards[user!!.uid] as ArrayList<WhiteCard>
                 updatedCards.removeAll(chosenCards)
 
                 // Update choice in db
-                comm?.updateMatchInDB(
+                comm!!.updateMatchInDB(
                     match!!.name as String,
                     hashMapOf(
                         "playersChoices.${user!!.uid}" to chosenCards,
@@ -270,9 +276,6 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
 
                 // Show other players choices
                 showPlayersChoices()
-
-                // Add a listener for awarding activity
-                comm?.enableWinnerListener()
             }
         }
     }
@@ -408,15 +411,15 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         chosenCards.add(card)
 
         // Set card background color
-        layoutsIndex[card.Text]?.findViewById<ImageView>(R.id.iv_background)?.visibility =
+        layoutsIndex[card.Text]!!.findViewById<ImageView>(R.id.iv_background)!!.visibility =
             View.VISIBLE
 
         // If there are already enough cards to fill all gaps remove first
         if (chosenCards.size > blackGaps as Int) {
             // Remove selected background from cards
-            layoutsIndex[chosenCards[0].Text as String]?.findViewById<ImageView>(R.id.iv_background)?.visibility =
+            layoutsIndex[chosenCards[0].Text as String]!!.findViewById<ImageView>(R.id.iv_background)!!.visibility =
                 View.INVISIBLE
-            layoutsIndex[chosenCards[0].Text as String]?.findViewById<TextView>(R.id.tv_gap_id)?.text =
+            layoutsIndex[chosenCards[0].Text as String]!!.findViewById<TextView>(R.id.tv_gap_id)!!.text =
                 ""
             // Remove card from chosen cards
             chosenCards.removeAt(0)
@@ -424,7 +427,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         // For each chosen cards set number of it's gap
         chosenCards.forEachIndexed { i, c ->
             // Set card gap
-            layoutsIndex[c.Text]?.findViewById<TextView>(R.id.tv_gap_id)?.text = (i + 1).toString()
+            layoutsIndex[c.Text]!!.findViewById<TextView>(R.id.tv_gap_id)!!.text =
+                (i + 1).toString()
         }
     }
 
@@ -499,8 +503,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                     bestChoice = player
 
                     // Set card background color
-                    bestChoiceLayout?.findViewById<ImageView>(R.id.iv_white_choices_back)
-                        ?.setImageResource(R.drawable.white_choices_not_selected)
+                    bestChoiceLayout!!.findViewById<ImageView>(R.id.iv_white_choices_back)
+                        .setImageResource(R.drawable.white_choices_not_selected)
 
                     // Update layout
                     bestChoiceLayout = outLayout
@@ -524,7 +528,10 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         findViewById<Button>(R.id.bt_done).visibility = View.INVISIBLE
 
         // Plot other players choices
-        comm?.addMatchListenerInDB(match!!.name as String)
+        comm!!.addMatchListenerInDB(match!!.name as String)
+
+        // Add a listener for awarding activity
+        comm!!.enableWinnerListener()
     }
 
     /**
@@ -572,14 +579,14 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         Log.d(resources.getString(R.string.DEBUG_GAME), "Starting Nickname activity.")
 
         // Remove all listeners
-        comm?.disableWinnerListener()
-        comm?.removeMatchListener()
+        comm!!.disableWinnerListener()
+        comm!!.removeMatchListener()
 
         // Define intent
         val intent = Intent(this, ChooseNicknameActivity::class.java)
 
         // Put data in bundle
-        bundle?.putSerializable("b_user", user)
+        bundle!!.putSerializable("b_user", user)
 
         // Add bundle stored data in previous activity
         intent.putExtras(bundle as Bundle)
@@ -596,14 +603,14 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         Log.d(resources.getString(R.string.DEBUG_GAME), "Starting Distributing activity.")
 
         // Remove all listeners
-        comm?.disableWinnerListener()
-        comm?.removeMatchListener()
+        comm!!.disableWinnerListener()
+        comm!!.removeMatchListener()
 
         // Define intent
         val intent = Intent(this, DistributingActivity::class.java)
 
         // Put data in bundle
-        bundle?.putSerializable("b_user", user)
+        bundle!!.putSerializable("b_user", user)
 
         // Add bundle stored data
         intent.putExtras(bundle as Bundle)
@@ -621,22 +628,22 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         var code: Int = resources.getInteger(R.integer.AWARDING_CODE)
 
         // Remove all listeners
-        comm?.disableWinnerListener()
-        comm?.removeMatchListener()
+        comm!!.disableWinnerListener()
+        comm!!.removeMatchListener()
 
         // Check if game is finished
         if (match!!.round >= match!!.rounds as Int) {
-            bundle?.putBoolean("end", true)
+            bundle!!.putBoolean("end", true)
             code = resources.getInteger(R.integer.END_CODE)
         } else {
-            bundle?.putBoolean("end", false)
+            bundle!!.putBoolean("end", false)
         }
 
         // Define intent
         val intent = Intent(this, AwardingActivity::class.java)
 
         // Put data in bundle
-        bundle?.putSerializable("b_user", user)
+        bundle!!.putSerializable("b_user", user)
 
         // Add bundle stored data
         intent.putExtras(bundle as Bundle)

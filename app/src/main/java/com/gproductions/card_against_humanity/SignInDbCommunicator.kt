@@ -46,9 +46,7 @@ open class SignInDbCommunicator(activity: SignInActivity) : DbCommunicator() {
                 Log.d(tag, "User not logged in (email). ${e.message}")
                 if (e.message.equals("The password is invalid or the user does not have a password.")) {
                     // Show error to user
-                    activity!!.showError(
-                        resources?.getString(R.string.wrong_password).toString()
-                    )
+                    activity!!.showError(resources!!.getString(R.string.wrong_password))
                 } else {
                     // Create a new user
                     auth.createUserWithEmailAndPassword(email, password)
@@ -66,14 +64,10 @@ open class SignInDbCommunicator(activity: SignInActivity) : DbCommunicator() {
                             Log.d(tag, "User NOT created (email). $e2")
                             if (e.equals("email-already-in-use")) {
                                 // Show error to user
-                                activity!!.showError(
-                                    resources?.getString(R.string.used_email).toString()
-                                )
+                                activity!!.showError(resources!!.getString(R.string.used_email))
                             } else {
                                 // Show error to user
-                                activity!!.showError(
-                                    resources?.getString(R.string.error_authentication).toString()
-                                )
+                                activity!!.showError(resources!!.getString(R.string.error_authentication))
                             }
                         }
                 }
@@ -82,7 +76,7 @@ open class SignInDbCommunicator(activity: SignInActivity) : DbCommunicator() {
 
     /**
      * This function is used to authenticate a user with idToken,
-     * @param idToken idtoken of google user
+     * @param idToken id token of google user
      * - Get credentials from Google,
      * - Call Firebase function to authenticate user in db with it's token,
      */
@@ -103,7 +97,7 @@ open class SignInDbCommunicator(activity: SignInActivity) : DbCommunicator() {
                 // Sign in failed
                 Log.d(tag, "User NOT authenticated (idToken). $e")
                 // Show error to user
-                activity!!.showError(resources?.getString(R.string.error_authentication) + "Auth with token.")
+                activity!!.showError(resources!!.getString(R.string.error_authentication) + "Auth with token.")
             }
     }
 

@@ -147,7 +147,7 @@ class WaitPlayers : AppCompatActivity(), View.OnClickListener {
     private fun removePlayerInMatch() {
         Log.d(resources.getString(R.string.DEBUG_WAIT), "Deleting player from match.")
 
-        comm?.removePlayerInDB(user as User, match as Match)
+        comm!!.removePlayerInDB(user as User, match as Match)
 
         // Clear user and go to matches activity
         resetUser()
@@ -167,7 +167,7 @@ class WaitPlayers : AppCompatActivity(), View.OnClickListener {
             goGameActivity()
         else
         // Add listener
-            comm?.addMatchListenerInDB(match!!.name as String)
+            comm!!.addMatchListenerInDB(match!!.name as String)
 
         // Set button start visible if user is creator
         if (match!!.dealer == user!!.uid) {
@@ -200,12 +200,14 @@ class WaitPlayers : AppCompatActivity(), View.OnClickListener {
         }
 
         // Update match on db
-        comm?.updateMatchInDB(
-        match!!.name as String,
-        hashMapOf(
-            "active" to true,
-            "playersPoints" to match!!.playersPoints,
-            "playersCards" to match!!.playersCards))
+        comm!!.updateMatchInDB(
+            match!!.name as String,
+            hashMapOf(
+                "active" to true,
+                "playersPoints" to match!!.playersPoints,
+                "playersCards" to match!!.playersCards
+            )
+        )
     }
 
     /**
@@ -246,7 +248,7 @@ class WaitPlayers : AppCompatActivity(), View.OnClickListener {
         user!!.matchName = "nil"
 
         // Update user
-        comm?.updateUserInDB(
+        comm!!.updateUserInDB(
             user!!.uid as String,
             hashMapOf(
                 "matchName" to "nil"
@@ -263,10 +265,10 @@ class WaitPlayers : AppCompatActivity(), View.OnClickListener {
         val intent = Intent(this, ChooseMatchActivity::class.java)
 
         // Remove players listener
-        comm?.removeMatchListener()
+        comm!!.removeMatchListener()
 
         // Put data in bundle
-        bundle?.putSerializable("b_user", user)
+        bundle!!.putSerializable("b_user", user)
 
         // Add bundle stored data in previous activity
         intent.putExtras(bundle as Bundle)
@@ -288,10 +290,10 @@ class WaitPlayers : AppCompatActivity(), View.OnClickListener {
         val intent = Intent(this, ChooseNicknameActivity::class.java)
 
         // Remove players listener
-        comm?.removeMatchListener()
+        comm!!.removeMatchListener()
 
         // Put data in bundle
-        bundle?.putSerializable("b_user", user)
+        bundle!!.putSerializable("b_user", user)
 
         // Add bundle stored data
         intent.putExtras(bundle as Bundle)
@@ -310,10 +312,10 @@ class WaitPlayers : AppCompatActivity(), View.OnClickListener {
         val intent = Intent(this, GameActivity::class.java)
 
         // Remove players listener
-        comm?.removeMatchListener()
+        comm!!.removeMatchListener()
 
         // Put data in bundle
-        bundle?.putSerializable("b_user", user)
+        bundle!!.putSerializable("b_user", user)
 
         // Add bundle stored data in next activity
         intent.putExtras(bundle as Bundle)
