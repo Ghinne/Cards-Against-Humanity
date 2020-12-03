@@ -132,7 +132,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         super.onSaveInstanceState(outState)
         Log.d(resources.getString(R.string.DEBUG_GAME), "Saving state.")
         outState.putSerializable("b_user", user)
-        outState.putBoolean("dealer_distribute", bundle!!.getBoolean("dealer_distribute"))
+        outState.putBoolean("dealer_distribute", bundle?.getBoolean("dealer_distribute")!!)
     }
 
     /**
@@ -144,7 +144,7 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
         match = dbMatch
 
         // Check if game in distributing mode
-        if (match!!.distributing.isNotEmpty() || bundle!!.getBoolean("dealer_distribute")) {
+        if (match!!.distributing.isNotEmpty() || bundle?.getBoolean("dealer_distribute")!!) {
             Log.d(resources.getString(R.string.DEBUG_GAME), "Distributing ${match!!.distributing}")
             goDistributingActivity()
         } else {
@@ -503,8 +503,8 @@ class GameActivity : AppCompatActivity(), View.OnClickListener {
                     bestChoice = player
 
                     // Set card background color
-                    bestChoiceLayout!!.findViewById<ImageView>(R.id.iv_white_choices_back)
-                        .setImageResource(R.drawable.white_choices_not_selected)
+                    bestChoiceLayout?.findViewById<ImageView>(R.id.iv_white_choices_back)
+                        ?.setImageResource(R.drawable.white_choices_not_selected)
 
                     // Update layout
                     bestChoiceLayout = outLayout
