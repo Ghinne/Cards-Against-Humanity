@@ -21,4 +21,13 @@ The part of speech of a white card is a noun or gerund, including both single wo
 The game ends with one or more winners after certain amount of rounds. A point is given to a winner or splitted equally in case of multiple winners.
 
 ## App
-CAH app start with sign-in request
+
+### Sign-In 
+CAH app start with sign-in request, where user can login/register himself using email and password or using Google sign-in.
+
+<p align="center">
+<img width="180" height="320" style="float: right;" src="https://github.com/Ghinne/Cards-Against-Humanity/blob/master/Screenshots/SignIn.png">
+</p>
+
+###  
+
