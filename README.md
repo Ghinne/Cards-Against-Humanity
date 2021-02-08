@@ -19,3 +19,6 @@ After the round, a new player becomes the Card Czar, and everyone receive enough
 The part of speech of a white card is a noun or gerund, including both single words and phrase constructions. Black cards are either fill-in-the-blank statements or questions. Both white and black cards break these rules on rare occasions.
 
 The game ends with one or more winners after certain amount of rounds. A point is given to a winner or splitted equally in case of multiple winners.
+
+## App
+CAH app start with sign-in request
