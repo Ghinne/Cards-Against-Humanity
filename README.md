@@ -76,3 +76,10 @@ For better understanding i've drawn a diagram.
 As you can see many activities can return to the Choose Nickname activity, this is due to the fact that in case of a failure of an activity or a communication with the database, the game is interrupted and the players return to that activity.
 To make the app more orderly and less repetitive I used the DBCommunicator class which, once extended for the different activities, allows communication with the database.
 As for the database, I opted to use Cloud Firestore, for the ease of use and the ability to perform more complex queries.
+
+## Game Languages
+Game and cards supported languages.
+<ul>
+  <li>English</li>
+  <li>Italian</li>
+</ul>
