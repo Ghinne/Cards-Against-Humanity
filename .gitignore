@@ -12,3 +12,7 @@
 /captures
 .externalNativeBuild
 .cxx
+app/google-services (2).json
+app/google-services.json
+CardLoader/things/cardau-e7c80-firebase-adminsdk-spds3-f66eed6982.json
+CardLoader/things/google-services.json
