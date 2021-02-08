@@ -6,7 +6,7 @@
 Cards Against Humanity is a party game in which players complete fill-in-the-blank statements using words or phrases typically deemed as offensive, risqué or politically incorrect printed on playing cards. 
 
 ## Rules
-This game to work propely require at least 3 people, at least two contenders and only one judge.<br>
+This game to work propely require at least three people, at least two contenders and only one judge.<br>
 On start, each player receive ten white cards.<br>
 
 Player that create match begins as the "Card Czar" and plays a black card, face up.
@@ -20,14 +20,34 @@ The part of speech of a white card is a noun or gerund, including both single wo
 
 The game ends with one or more winners after certain amount of rounds. A point is given to a winner or splitted equally in case of multiple winners.
 
-## App
+## App activities
 
-### Sign-In 
+### Sign-In Activity
 CAH app start with sign-in request, where user can login/register himself using email and password or using Google sign-in.
-
 <p align="center">
 <img width="180" height="320" style="float: right;" src="https://github.com/Ghinne/Cards-Against-Humanity/blob/master/Screenshots/SignIn.png">
 </p>
 
-###  
+###  Choose Nickname Activity
+When user has logged in, he need to choose a nickname.
+<p align="center">
+<img width="180" height="320" style="float: right;" src="https://github.com/Ghinne/Cards-Against-Humanity/blob/master/Screenshots/ChooseNickname.png">
+</p>
+
+### Choose Match Activity
+After choosing a nickname, user can join a match or create a new one setting match name, optinal password and match rounds.
+<p align="center">
+<img width="180" height="320" style="float: right;" src="https://github.com/Ghinne/Cards-Against-Humanity/blob/master/Screenshots/ChooseMatch.png">
+</p>
+
+### Wait for players activity
+If user join a match he need to wait that match dealer start the match or going back to choose match activity.
+<p align="center">
+<img width="180" height="320" style="float: right;" src="https://github.com/Ghinne/Cards-Against-Humanity/blob/master/Screenshots/WaitPlayer.png">
+</p>
+If user is match dealer when at least two other users take part to the game he can start the match or he can delete actual match and return to choose match activity.
+<p align="center">
+<img width="180" height="320" style="float: right;" src="https://github.com/Ghinne/Cards-Against-Humanity/blob/master/Screenshots/WaitCreator.png">
+</p>
+
 
