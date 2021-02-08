@@ -50,4 +50,19 @@ If user is match dealer when at least two other users take part to the game he c
 <img width="180" height="320" style="float: right;" src="https://github.com/Ghinne/Cards-Against-Humanity/blob/master/Screenshots/WaitCreator.png">
 </p>
 
+### Shuffling and Distributing
+After match start cards are shuffled and distribuited to players.
 
+### Game Activity
+In this activity contenders can choose white card(s) to fill black card gaps(s) and send it(them) to card Czar.
+<p align="center">
+<img width="180" height="320" style="float: right;" src="https://github.com/Ghinne/Cards-Against-Humanity/blob/master/Screenshots/ContenderChoice.png">
+</p>
+
+Card Czar will see anonymous contenders choices once they have done and choose his favorite one giving a point to the relative player.
+<p align="center">
+<img width="180" height="320" style="float: right;" src="https://github.com/Ghinne/Cards-Against-Humanity/blob/master/Screenshots/CzarChoice.png">
+</p>
+
+### Awarding Activity
+In this activity player are shown whether they have win or lost.
