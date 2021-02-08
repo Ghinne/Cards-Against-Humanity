@@ -66,3 +66,13 @@ Card Czar will see anonymous contenders choices once they have done and choose h
 
 ### Awarding Activity
 In this activity player are shown whether they have win or lost.
+If game is finished, match will be removed from DB, user points will be updated and players come back to Choose Nickname activity.
+
+## Life Cycle diagram
+For better understanding i've drawn a diagram.
+<p align="center">
+<img style="float: right;" src="https://github.com/Ghinne/Cards-Against-Humanity/blob/master/Screenshots/LifeCycle.png">
+</p>
+As you can see many activities can return to the Choose Nickname activity, this is due to the fact that in case of a failure of an activity or a communication with the database, the game is interrupted and the players return to that activity.
+To make the app more orderly and less repetitive I used the DBCommunicator class which, once extended for the different activities, allows communication with the database.
+As for the database, I opted to use Cloud Firestore, for the ease of use and the ability to perform more complex queries.
