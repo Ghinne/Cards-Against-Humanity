@@ -1,4 +1,4 @@
-package com.gproductions.card_against_humanity
+package com.gproductions.CardsAgainstHumanity.PresentationClasses
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -12,6 +12,8 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FieldValue
+import com.gproductions.CardsAgainstHumanity.LogicClasses.ChooseMatchDbCommunicator
+import com.gproductions.CardsAgainstHumanity.R
 import java.util.*
 
 /**

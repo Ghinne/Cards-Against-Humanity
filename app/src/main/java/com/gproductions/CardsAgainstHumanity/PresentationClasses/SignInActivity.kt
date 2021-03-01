@@ -1,4 +1,4 @@
-package com.gproductions.card_against_humanity
+package com.gproductions.CardsAgainstHumanity.PresentationClasses
 
 import android.content.Intent
 import android.os.Bundle
@@ -18,6 +18,8 @@ import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.gproductions.CardsAgainstHumanity.LogicClasses.SignInDbCommunicator
+import com.gproductions.CardsAgainstHumanity.R
 
 /**
  * This class is used for Users login and registration,

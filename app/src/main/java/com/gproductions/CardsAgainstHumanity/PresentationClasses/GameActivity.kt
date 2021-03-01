@@ -1,4 +1,4 @@
-package com.gproductions.card_against_humanity
+package com.gproductions.CardsAgainstHumanity.PresentationClasses
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.gproductions.CardsAgainstHumanity.LogicClasses.GameDbCommunicator
+import com.gproductions.CardsAgainstHumanity.R
 import org.apache.commons.lang3.StringUtils
 
 /**

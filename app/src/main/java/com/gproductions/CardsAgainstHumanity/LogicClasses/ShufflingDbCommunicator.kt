@@ -1,7 +1,11 @@
-package com.gproductions.card_against_humanity
+package com.gproductions.CardsAgainstHumanity.LogicClasses
 
 import android.content.res.Resources
 import android.util.Log
+import com.gproductions.CardsAgainstHumanity.PresentationClasses.Match
+import com.gproductions.CardsAgainstHumanity.R
+import com.gproductions.CardsAgainstHumanity.PresentationClasses.ShufflingActivity
+import com.gproductions.CardsAgainstHumanity.PresentationClasses.User
 import java.util.*
 import kotlin.collections.ArrayList
 

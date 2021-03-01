@@ -1,4 +1,4 @@
-package com.gproductions.card_against_humanity
+package com.gproductions.CardsAgainstHumanity.PresentationClasses
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
+import com.gproductions.CardsAgainstHumanity.LogicClasses.ShufflingDbCommunicator
+import com.gproductions.CardsAgainstHumanity.R
 import kotlin.collections.ArrayList
 
 /**

@@ -1,4 +1,4 @@
-package com.gproductions.card_against_humanity
+package com.gproductions.CardsAgainstHumanity.PresentationClasses
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,8 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.gproductions.CardsAgainstHumanity.LogicClasses.WaitPlayersDbCommunicator
+import com.gproductions.CardsAgainstHumanity.R
 
 /**
  * This activity class is used by players to wait other players before starting the match,

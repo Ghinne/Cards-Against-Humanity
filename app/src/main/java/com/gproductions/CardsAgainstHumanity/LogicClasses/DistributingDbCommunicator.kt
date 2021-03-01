@@ -1,7 +1,9 @@
-package com.gproductions.card_against_humanity
+package com.gproductions.CardsAgainstHumanity.LogicClasses
 
 import android.content.res.Resources
 import android.util.Log
+import com.gproductions.CardsAgainstHumanity.*
+import com.gproductions.CardsAgainstHumanity.PresentationClasses.*
 
 /**
  * This class inherit from DbCommunicator and it's used by activity to communicate with firebase db,

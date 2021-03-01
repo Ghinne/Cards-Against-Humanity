@@ -1,4 +1,4 @@
-package com.gproductions.card_against_humanity
+package com.gproductions.CardsAgainstHumanity.LogicClasses
 
 import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
@@ -6,6 +6,8 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.gproductions.CardsAgainstHumanity.PresentationClasses.Match
+import com.gproductions.CardsAgainstHumanity.PresentationClasses.User
 
 /**
  * This is the abstract class used to communicate with Firebase and Firestore db,

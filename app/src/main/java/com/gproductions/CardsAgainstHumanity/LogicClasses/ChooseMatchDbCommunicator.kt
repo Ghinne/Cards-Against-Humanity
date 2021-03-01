@@ -1,9 +1,13 @@
-package com.gproductions.card_against_humanity
+package com.gproductions.CardsAgainstHumanity.LogicClasses
 
 import android.content.res.Resources
 import android.util.Log
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ListenerRegistration
+import com.gproductions.CardsAgainstHumanity.PresentationClasses.ChooseMatchActivity
+import com.gproductions.CardsAgainstHumanity.PresentationClasses.Match
+import com.gproductions.CardsAgainstHumanity.R
+import com.gproductions.CardsAgainstHumanity.PresentationClasses.User
 
 /**
  * This class inherit from DbCommunicator and it's used by activity to communicate with firebase db,

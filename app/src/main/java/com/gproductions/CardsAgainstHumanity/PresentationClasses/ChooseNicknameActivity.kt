@@ -1,4 +1,4 @@
-package com.gproductions.card_against_humanity
+package com.gproductions.CardsAgainstHumanity.PresentationClasses
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,6 +9,8 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.gproductions.CardsAgainstHumanity.LogicClasses.ChooseNicknameDbCommunicator
+import com.gproductions.CardsAgainstHumanity.R
 
 /**
  * This activity class is used by user to choose nickname and create user with that nickname,

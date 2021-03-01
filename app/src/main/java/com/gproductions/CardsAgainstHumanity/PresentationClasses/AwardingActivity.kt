@@ -1,4 +1,4 @@
-package com.gproductions.card_against_humanity
+package com.gproductions.CardsAgainstHumanity.PresentationClasses
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.firestore.FieldValue
+import com.gproductions.CardsAgainstHumanity.LogicClasses.AwardingDbCommunicator
+import com.gproductions.CardsAgainstHumanity.R
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
